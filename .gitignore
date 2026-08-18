@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 .docx-review/
+.sites/
 .env
 .DS_Store
 *.log
