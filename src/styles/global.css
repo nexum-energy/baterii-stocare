@@ -56,8 +56,12 @@ textarea {
 }
 
 .page-shell {
-  width: min(1180px, calc(100% - 2rem));
+  width: min(1240px, calc(100% - 2rem));
   margin-inline: auto;
+}
+
+h2 {
+  letter-spacing: -0.045em;
 }
 
 .eyebrow {
@@ -83,8 +87,8 @@ textarea {
 
 .hero-overlay {
   background:
-    linear-gradient(90deg, rgb(5 19 15 / 0.96) 0%, rgb(7 25 19 / 0.84) 36%, rgb(8 24 19 / 0.28) 68%, rgb(8 24 19 / 0.1) 100%),
-    linear-gradient(0deg, rgb(5 18 14 / 0.7), transparent 48%);
+    linear-gradient(90deg, rgb(4 14 11 / 0.96) 0%, rgb(5 16 13 / 0.86) 34%, rgb(5 15 12 / 0.28) 61%, rgb(5 15 12 / 0.08) 100%),
+    linear-gradient(0deg, rgb(4 13 10 / 0.8), transparent 48%);
 }
 
 .eyebrow-light {
@@ -96,7 +100,12 @@ textarea {
 }
 
 .section-pad {
-  padding-block: clamp(5rem, 10vw, 8.5rem);
+  padding-block: clamp(6rem, 11vw, 10rem);
+}
+
+.eligibility-step legend {
+  font-family: var(--font-display);
+  font-weight: 500;
 }
 
 .option-card {
@@ -169,13 +178,13 @@ details[open] .faq-plus {
 @media (max-width: 767px) {
   .hero-premium,
   .hero-premium > .page-shell {
-    min-height: 650px;
+    min-height: 760px;
   }
 
   .hero-overlay {
     background:
-      linear-gradient(90deg, rgb(5 19 15 / 0.94), rgb(7 25 19 / 0.58)),
-      linear-gradient(0deg, rgb(5 18 14 / 0.84), transparent 62%);
+      linear-gradient(90deg, rgb(4 14 11 / 0.96), rgb(5 16 13 / 0.5)),
+      linear-gradient(0deg, rgb(4 13 10 / 0.9), transparent 62%);
   }
 }
 
