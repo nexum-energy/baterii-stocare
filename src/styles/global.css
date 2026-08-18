@@ -184,21 +184,6 @@ textarea {
   box-shadow: 0 0 0 4px rgb(47 121 94 / 0.13);
 }
 
-.result-status[data-tone="success"] {
-  border-color: #8bbf75;
-  background: #f2f8ec;
-}
-
-.result-status[data-tone="warning"] {
-  border-color: #d6b867;
-  background: #fff9e9;
-}
-
-.result-status[data-tone="danger"] {
-  border-color: #d79685;
-  background: #fff3ef;
-}
-
 details summary::-webkit-details-marker {
   display: none;
 }

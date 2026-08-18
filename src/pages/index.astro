@@ -13,43 +13,12 @@ const metrics = [
   ['12 kWh', 'capacitate minimă'],
 ];
 
-const eligibilitySteps = [
-  {
-    short: 'Solicitant',
-    title: 'Despre tine',
-    description: 'Programul din ghid este destinat persoanelor fizice care au calitatea de prosumator.',
-    questions: [
-      { name: 'individual', title: 'Solicitarea este făcută de o persoană fizică?', hint: 'Conform art. 5 alin. (1).', options: [['yes', 'Da'], ['no', 'Nu']] },
-      { name: 'prosumator', title: 'Ai calitatea de prosumator și contractul este pe numele tău?', hint: 'Contractul trebuie să fie aferent locului unde se implementează proiectul.', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu sunt sigur']] },
-      { name: 'debts', title: 'Ești fără obligații restante la bugetul de stat și la bugetul local?', hint: 'Se verifică domiciliul și, dacă este diferită, localitatea de implementare.', options: [['yes', 'Da, fără restanțe'], ['no', 'Am restanțe'], ['unknown', 'Nu știu încă']] },
-      { name: 'activities', title: 'La adresa proiectului se desfășoară activități economice sau profesionale?', hint: 'Este acceptată excepția în care consumul activității este contorizat separat de locuință.', options: [['none', 'Nu'], ['separate', 'Da, cu contorizare separată'], ['unseparated', 'Da, fără contorizare separată']] },
-    ],
-  },
-  {
-    short: 'Locuință',
-    title: 'Locul de implementare',
-    description: 'Proiectul trebuie realizat în România, la locul de consum și producere aferent prosumatorului.',
-    questions: [
-      { name: 'romania', title: 'Proiectul va fi implementat pe teritoriul României?', hint: 'Conform art. 16 alin. (1).', options: [['yes', 'Da'], ['no', 'Nu']] },
-      { name: 'existingStorage', title: 'Există deja un sistem de stocare instalat la această adresă?', hint: 'Un sistem deja instalat la locul declarat conduce la neeligibilitate.', options: [['no', 'Nu'], ['yes', 'Da'], ['unknown', 'Nu sunt sigur']] },
-      { name: 'grid', title: 'Sistemul fotovoltaic este racordat la rețeaua de distribuție?', hint: 'Trebuie să existe certificat de racordare pentru locul de consum.', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu']] },
-      { name: 'exclusive', title: 'Bateria va deservi exclusiv acest loc de consum și producere?', hint: 'Nu poate alimenta alte locuințe sau activități economice necontorizate separat.', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu']] },
-    ],
-  },
-  {
-    short: 'Sistem',
-    title: 'Soluția tehnică',
-    description: 'Aceste răspunsuri pot fi confirmate împreună cu un instalator validat.',
-    questions: [
-      { name: 'newSystem', title: 'Sistemul de stocare propus este nou?', hint: 'Echipamentele deja utilizate nu sunt eligibile.', options: [['yes', 'Da'], ['no', 'Nu']] },
-      { name: 'technology', title: 'Tehnologia este Li-Ion, LiFePO4, Na-Ion sau echivalentă fără plumb?', hint: 'Acumulatorii plumb-acid nu sunt eligibili, indiferent de construcție.', options: [['accepted', 'Da, fără plumb'], ['lead', 'Este plumb-acid'], ['unknown', 'Nu știu']] },
-      { name: 'inverter', title: 'Ai invertor hibrid compatibil sau îl vei include în proiect?', hint: 'Invertorul poate fi instalat până la punerea în funcțiune a stocării.', options: [['yes', 'Am invertor compatibil'], ['plan', 'Va fi inclus'], ['no', 'Nu'], ['unknown', 'Nu știu']] },
-      { name: 'compatible', title: 'Bateria este compatibilă tehnic cu sistemul fotovoltaic?', hint: 'Compatibilitatea se validează tehnic înainte de instalare.', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Necesită verificare']] },
-      { name: 'warranty', title: 'Sistemul are garanție de minimum 5 ani?', hint: 'Cerință minimă din art. 16 alin. (2).', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu']] },
-      { name: 'cycles', title: 'Sistemul oferă minimum 3.000 de cicluri?', hint: 'Cerință minimă din art. 16 alin. (2).', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu']] },
-      { name: 'certified', title: 'Componentele sunt certificate de un organism acreditat SR EN/ISO 17065?', hint: 'Solicită instalatorului documentele de conformitate.', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Necesită verificare']] },
-    ],
-  },
+const eligibilityQuestions = [
+  { name: 'prosumator', title: 'Ești persoană fizică, prosumator, iar contractul este pe numele tău?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu sunt sigur']] },
+  { name: 'debts', title: 'Ești fără restanțe la bugetul de stat și la bugetul local?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu încă']] },
+  { name: 'grid', title: 'Locuința este în România, iar sistemul fotovoltaic este racordat la rețea?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu sunt sigur']] },
+  { name: 'existingStorage', title: 'Ai deja o baterie de stocare instalată la această adresă?', options: [['no', 'Nu'], ['yes', 'Da'], ['unknown', 'Nu sunt sigur']] },
+  { name: 'activities', title: 'Se desfășoară activități economice sau profesionale la această adresă?', options: [['none', 'Nu'], ['separate', 'Da, cu contor separat'], ['unseparated', 'Da, fără contor separat']] },
 ];
 
 const documents = [
@@ -68,7 +37,7 @@ const faqs = [
   ['Este obligatoriu un invertor hibrid?', 'Da. Dacă sistemul fotovoltaic nu are deja un invertor hibrid compatibil, proiectul poate include achiziția și instalarea lui până la punerea în funcțiune a sistemului de stocare.'],
   ['Ce capacitate minimă trebuie să aibă bateria?', 'Minimum 12 kWh. Tehnologia trebuie să fie fără plumb, garanția de minimum 5 ani, iar numărul de cicluri de minimum 3.000.'],
   ['Cum se acordă proiectele?', 'După închiderea sesiunii, proiectele sunt ordonate descrescător după punctaj, în limita bugetului. Punctajul ia în calcul contribuția proprie, capacitatea de stocare și puterea fotovoltaică instalată.'],
-  ['Rezultatul verificatorului garantează finanțarea?', 'Nu. Este o evaluare preliminară bazată pe răspunsurile tale și pe ghidul furnizat. Eligibilitatea și selecția finală sunt stabilite de AFM după verificarea documentelor.'],
+  ['Verificarea Nexum Energy garantează finanțarea?', 'Nu. Analizăm preliminar răspunsurile tale și cerințele din ghid, apoi revenim cu recomandarea noastră. Eligibilitatea și selecția finală sunt stabilite de AFM după verificarea documentelor.'],
 ];
 ---
 
@@ -80,7 +49,7 @@ const faqs = [
     <meta name="description" content="Verifică orientativ eligibilitatea pentru programul AFM dedicat sistemelor de stocare a energiei regenerabile și solicită o ofertă Nexum Energy." />
     <meta name="theme-color" content="#153f31" />
     <meta property="og:title" content="Finanțare baterii de stocare | Nexum Energy" />
-    <meta property="og:description" content="Verifică eligibilitatea, estimează finanțarea și pregătește documentele pentru programul AFM." />
+    <meta property="og:description" content="Completează chestionarul scurt, iar Nexum Energy verifică eligibilitatea și revine cu o ofertă pentru sistemul de stocare." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:alt" content="Nexum Energy — finanțare pentru baterii de stocare" />
@@ -114,7 +83,7 @@ const faqs = [
           <p class="mt-7 max-w-2xl text-lg leading-8 text-[#53635c]">Verifică în câteva minute dacă îndeplinești condițiile din ghidul de finanțare pentru un sistem nou de stocare și află ce sprijin ai putea primi.</p>
           <div class="mt-9 flex flex-col gap-3 sm:flex-row">
             <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-full bg-forest px-7 text-base font-extrabold text-white shadow-[0_15px_35px_rgba(21,63,49,0.2)] transition hover:-translate-y-0.5 hover:bg-moss">Începe verificarea <span aria-hidden="true" class="ml-3">→</span></a>
-            <a href="#oferta" class="inline-flex min-h-14 items-center justify-center rounded-full border border-[#c9d5cc] bg-white/70 px-7 text-base font-bold text-forest transition hover:border-moss hover:bg-white">Solicită o ofertă</a>
+            <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-full border border-[#c9d5cc] bg-white/70 px-7 text-base font-bold text-forest transition hover:border-moss hover:bg-white">Solicită verificarea</a>
           </div>
           <dl class="mt-12 grid grid-cols-3 gap-5 border-t border-[#dce4dc] pt-7">
             {metrics.map(([value, label]) => <div><dt class="text-[clamp(1.25rem,3vw,1.75rem)] font-extrabold tracking-[-0.04em] text-forest">{value}</dt><dd class="mt-1 text-xs leading-5 text-[#66766e] sm:text-sm">{label}</dd></div>)}
@@ -133,9 +102,9 @@ const faqs = [
 
       <section aria-label="Avantajele verificării" class="border-y border-[#dbe4dc] bg-white/65">
         <div class="page-shell grid gap-5 py-6 text-sm text-[#53665d] sm:grid-cols-3">
-          <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#e6f1df] font-extrabold text-moss">✓</span> Durează aproximativ 3 minute</p>
+          <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#e6f1df] font-extrabold text-moss">✓</span> Doar două etape scurte</p>
           <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#e6f1df] font-extrabold text-moss">✓</span> Nu necesită cont sau CNP</p>
-          <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#e6f1df] font-extrabold text-moss">✓</span> Primești un rezultat explicat</p>
+          <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#e6f1df] font-extrabold text-moss">✓</span> Primești răspuns și ofertă de la noi</p>
         </div>
       </section>
 
@@ -153,67 +122,53 @@ const faqs = [
 
       <section id="eligibilitate" class="section-pad bg-mist">
         <div class="page-shell">
-          <div class="mx-auto max-w-3xl text-center"><span class="eyebrow">Verificare bazată pe ghid</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.055em] text-ink sm:text-6xl">Ești eligibil pentru finanțare?</h2><p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#5d6e66]">Răspunde cât mai exact. Criteriile tehnice pe care nu le cunoști vor apărea separat, ca puncte de verificat cu instalatorul.</p></div>
+          <div class="mx-auto max-w-3xl text-center"><span class="eyebrow">Chestionar de eligibilitate</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.055em] text-ink sm:text-6xl">Aflăm rapid dacă te încadrezi.</h2><p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#5d6e66]">Două etape scurte. Ne trimiți situația actuală și datele de contact, iar noi verificăm eligibilitatea și revenim cu răspunsul și oferta potrivită.</p></div>
           <div class="mx-auto mt-12 max-w-5xl overflow-hidden rounded-[2rem] border border-[#cfdbd1] bg-white shadow-[0_25px_70px_rgba(16,35,28,0.1)]">
             <div class="border-b border-[#e0e7e1] px-5 py-6 sm:px-9">
-              <div class="grid grid-cols-4 gap-2" aria-label="Progres verificare">
-                {[...eligibilitySteps.map((step) => step.short), 'Estimare'].map((label, index) => (
+              <div class="grid grid-cols-2 gap-4" aria-label="Progres chestionar">
+                {['Eligibilitate', 'Date de contact'].map((label, index) => (
                   <div class="progress-item flex items-center gap-2" data-progress-index={index} aria-current={index === 0 ? 'step' : undefined}><span class:list={['grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-extrabold', index === 0 ? 'bg-forest text-white' : 'bg-[#eaf0eb] text-[#718078]']}>{index + 1}</span><span class="hidden text-xs font-extrabold tracking-[0.08em] text-[#5e6e66] uppercase sm:block">{label}</span></div>
                 ))}
               </div>
-              <div class="mt-5 h-1.5 overflow-hidden rounded-full bg-[#e8eee9]" aria-hidden="true"><div id="progress-bar" class="h-full w-1/4 rounded-full bg-moss transition-[width] duration-300"></div></div>
+              <div class="mt-5 h-1.5 overflow-hidden rounded-full bg-[#e8eee9]" aria-hidden="true"><div id="progress-bar" class="h-full w-1/2 rounded-full bg-moss transition-[width] duration-300"></div></div>
             </div>
 
-            <form id="eligibility-form" novalidate class="px-5 py-8 sm:px-9 sm:py-10">
+            <form id="eligibility-form" data-endpoint={contactEndpoint} data-email={contactEmail} novalidate class="px-5 py-8 sm:px-9 sm:py-10">
               <div id="step-alert" class="mb-6 hidden rounded-xl border border-[#e4b8a9] bg-[#fff4ef] px-4 py-3 text-sm font-semibold text-[#7a3528]" role="alert">Alege un răspuns pentru fiecare întrebare înainte de a continua.</div>
-              {eligibilitySteps.map((step, stepIndex) => (
-                <fieldset class="eligibility-step" data-step={stepIndex} hidden={stepIndex !== 0}>
-                  <legend class="text-3xl font-extrabold tracking-[-0.04em] text-ink">{step.title}</legend><p class="mt-3 max-w-2xl leading-7 text-[#65756d]">{step.description}</p>
-                  <div class="mt-9 space-y-8">
-                    {step.questions.map((question) => (
-                      <div class="question-group">
-                        <p class="text-base font-extrabold text-ink" id={`${question.name}-label`}>{question.title}</p><p class="mt-1 text-sm leading-6 text-[#718078]" id={`${question.name}-hint`}>{question.hint}</p>
-                        <div class:list={['mt-3 grid gap-2', question.options.length > 2 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2']} role="radiogroup" aria-labelledby={`${question.name}-label`} aria-describedby={`${question.name}-hint`}>
-                          {question.options.map(([value, label], optionIndex) => <label class="option-card"><input type="radio" name={question.name} value={value} required={optionIndex === 0} /><span class="text-sm font-bold leading-5">{label}</span></label>)}
-                        </div>
+              <fieldset class="eligibility-step" data-step="0">
+                <legend class="text-3xl font-extrabold tracking-[-0.04em] text-ink">Situația ta actuală</legend><p class="mt-3 max-w-2xl leading-7 text-[#65756d]">Cinci întrebări esențiale din ghid. Dacă nu știi un răspuns, poți selecta „Nu sunt sigur”.</p>
+                <div class="mt-9 space-y-7">
+                  {eligibilityQuestions.map((question) => (
+                    <div class="question-group">
+                      <p class="text-base font-extrabold text-ink" id={`${question.name}-label`}>{question.title}</p>
+                      <div class="mt-3 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-labelledby={`${question.name}-label`}>
+                        {question.options.map(([value, label], optionIndex) => <label class="option-card"><input type="radio" name={question.name} value={value} required={optionIndex === 0} /><span class="text-sm font-bold leading-5">{label}</span></label>)}
                       </div>
-                    ))}
-                  </div>
-                </fieldset>
-              ))}
-
-              <fieldset class="eligibility-step" data-step="3" hidden>
-                <legend class="text-3xl font-extrabold tracking-[-0.04em] text-ink">Estimarea proiectului</legend><p class="mt-3 max-w-2xl leading-7 text-[#65756d]">Folosim valorile pentru a estima plafonul finanțării și punctajul descris la art. 19. Poți reveni și modifica oricând.</p>
-                <div class="mt-9 grid gap-6 sm:grid-cols-2">
-                  <label class="block"><span class="text-sm font-extrabold text-ink">Valoarea totală a proiectului</span><span class="relative mt-2 block"><input class="field-input pr-14" type="number" min="1" step="100" name="projectTotal" placeholder="ex. 24.000" required /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">lei</span></span></label>
-                  <label class="block"><span class="text-sm font-extrabold text-ink">Contribuția proprie planificată</span><span class="relative mt-2 block"><input class="field-input pr-14" type="number" min="0" step="100" name="ownContribution" placeholder="ex. 9.000" required /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">lei</span></span></label>
-                  <label class="block"><span class="text-sm font-extrabold text-ink">Puterea fotovoltaică instalată</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="0.1" step="0.1" name="pvPower" placeholder="ex. 6" required /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
-                  <label class="block"><span class="text-sm font-extrabold text-ink">Capacitatea bateriei propuse</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="1" step="0.1" name="storageCapacity" placeholder="minimum 12" required /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kWh</span></span></label>
+                    </div>
+                  ))}
                 </div>
-                <div class="mt-6 rounded-2xl bg-[#f4f7f4] p-5 text-sm leading-6 text-[#62726a]"><strong class="text-ink">Cum calculăm:</strong> finanțarea este limitată de 75% din valoarea proiectului, plafonul de 15.000 lei și standardul de cost de 1.250 lei/kWh. Punctajul maxim este 100.</div>
+              </fieldset>
+
+              <fieldset class="eligibility-step" data-step="1" hidden>
+                <legend class="text-3xl font-extrabold tracking-[-0.04em] text-ink">Date pentru verificare</legend><p class="mt-3 max-w-2xl leading-7 text-[#65756d]">Revenim personal cu verificarea eligibilității și o ofertă. Nu solicităm CNP sau documente în această etapă.</p>
+                <div class="mt-9 grid gap-6 sm:grid-cols-2">
+                  <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Nume și prenume <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="text" name="name" autocomplete="name" placeholder="Cum te numești?" required /></label>
+                  <label class="block"><span class="text-sm font-extrabold text-ink">Telefon <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="07xx xxx xxx" required /></label>
+                  <label class="block"><span class="text-sm font-extrabold text-ink">E-mail</span><input class="field-input mt-2" type="email" name="email" autocomplete="email" placeholder="nume@exemplu.ro" /></label>
+                  <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Județ și localitate <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="text" name="location" autocomplete="address-level2" placeholder="ex. Giurgiu, Bolintin-Vale" required /></label>
+                  <label class="block"><span class="text-sm font-extrabold text-ink">Puterea sistemului fotovoltaic</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="0" step="0.1" name="pvPower" inputmode="decimal" placeholder="ex. 6" /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
+                  <label class="block"><span class="text-sm font-extrabold text-ink">Ce invertor ai?</span><input class="field-input mt-2" type="text" name="inverter" placeholder="Marcă/model sau «Nu știu»" /></label>
+                </div>
+                <label class="mt-7 flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#5f7067]"><input class="mt-1 h-5 w-5 shrink-0 accent-[#2f795e]" type="checkbox" name="consent" required /><span>Sunt de acord ca Nexum Energy să folosească datele introduse pentru verificarea eligibilității și pentru a-mi transmite oferta. <span aria-hidden="true" class="text-moss">*</span></span></label>
+                <div id="form-status" class="mt-5 hidden rounded-xl border px-4 py-3 text-sm font-semibold" role="status" aria-live="polite"></div>
               </fieldset>
               <div class="mt-10 flex flex-col-reverse gap-3 border-t border-[#e5ebe6] pt-7 sm:flex-row sm:justify-between">
                 <button id="previous-step" type="button" class="hidden min-h-13 rounded-full border border-[#ccd8cf] px-6 font-extrabold text-forest transition hover:border-moss">Înapoi</button>
                 <button id="next-step" type="button" class="min-h-13 rounded-full bg-forest px-7 font-extrabold text-white transition hover:bg-moss sm:ml-auto">Continuă <span aria-hidden="true">→</span></button>
-                <button id="calculate-result" type="submit" class="hidden min-h-13 rounded-full bg-lime px-7 font-extrabold text-forest transition hover:bg-[#c7ef75] sm:ml-auto">Vezi rezultatul</button>
+                <button id="submit-eligibility" type="submit" class="hidden min-h-13 rounded-full bg-lime px-7 font-extrabold text-forest transition hover:bg-[#c7ef75] disabled:cursor-wait disabled:opacity-70 sm:ml-auto">Trimite pentru verificare <span aria-hidden="true">→</span></button>
               </div>
+              <p class="mt-4 text-xs leading-5 text-[#7b8982]">Câmpurile marcate cu * sunt obligatorii. Eligibilitatea finală este stabilită de AFM după verificarea documentelor.</p>
             </form>
-
-            <section id="eligibility-result" hidden aria-live="polite" class="border-t border-[#dce5de] bg-[#fafcf9] px-5 py-9 sm:px-9 sm:py-11">
-              <div id="result-status" class="result-status rounded-2xl border p-6" data-tone="success">
-                <p id="result-kicker" class="text-xs font-extrabold tracking-[0.13em] text-moss uppercase"></p><h3 id="result-title" class="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-ink"></h3><p id="result-summary" class="mt-3 max-w-3xl leading-7 text-[#5f7067]"></p>
-                <div id="result-blockers-wrap" class="mt-5 hidden"><p class="text-sm font-extrabold text-ink">Ce trebuie rezolvat:</p><ul id="result-blockers" class="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-[#5f5f58]"></ul></div>
-                <div id="result-unknown-wrap" class="mt-5 hidden"><p class="text-sm font-extrabold text-ink">Ce trebuie verificat:</p><ul id="result-unknown" class="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-[#5f5f58]"></ul></div>
-              </div>
-              <div class="mt-5 grid gap-3 sm:grid-cols-3">
-                <div class="rounded-2xl border border-[#dce5de] bg-white p-5"><p class="text-xs font-extrabold tracking-[0.1em] text-[#77867e] uppercase">Finanțare maximă estimată</p><p id="grant-value" class="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-forest">—</p></div>
-                <div class="rounded-2xl border border-[#dce5de] bg-white p-5"><p class="text-xs font-extrabold tracking-[0.1em] text-[#77867e] uppercase">Contribuție minimă estimată</p><p id="own-value" class="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-forest">—</p></div>
-                <div class="rounded-2xl border border-[#dce5de] bg-white p-5"><p class="text-xs font-extrabold tracking-[0.1em] text-[#77867e] uppercase">Punctaj orientativ</p><p id="score-value" class="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-forest">—</p></div>
-              </div>
-              <p id="finance-note" class="mt-4 text-sm leading-6 text-[#6c7b73]"></p>
-              <div class="mt-7 flex flex-col gap-3 sm:flex-row"><a id="result-offer" href="#oferta" class="inline-flex min-h-13 items-center justify-center rounded-full bg-forest px-7 font-extrabold text-white">Solicită o ofertă pentru configurație</a><button id="restart-check" type="button" class="min-h-13 rounded-full border border-[#ccd8cf] bg-white px-7 font-extrabold text-forest">Refă verificarea</button></div>
-              <p class="mt-6 text-xs leading-5 text-[#7a8881]">Rezultatul este orientativ și nu reprezintă o decizie de finanțare. AFM stabilește eligibilitatea și selecția după analiza documentelor și în limita bugetului sesiunii.</p>
-            </section>
           </div>
         </div>
       </section>
@@ -234,33 +189,6 @@ const faqs = [
         </div>
       </section>
 
-      <section id="oferta" class="section-pad page-shell">
-        <div class="grid overflow-hidden rounded-[2rem] border border-[#d8e2da] bg-white shadow-[0_28px_80px_rgba(16,35,28,0.1)] lg:grid-cols-[0.78fr_1.22fr]">
-          <div class="bg-[#e7f0e5] p-7 sm:p-10 lg:p-12">
-            <span class="eyebrow">Solicitare de ofertă</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.05em] text-ink">Spune-ne ce sistem ai acum.</h2><p class="mt-5 leading-7 text-[#5d6f66]">Completează doar datele necesare pentru o primă discuție. Nu solicităm CNP, documente fiscale sau copii după acte.</p>
-            <div class="mt-9 space-y-5 text-sm text-[#50645a]"><p class="flex gap-3"><span class="font-extrabold text-moss">01</span><span>Analizăm configurația existentă.</span></p><p class="flex gap-3"><span class="font-extrabold text-moss">02</span><span>Verificăm cerințele tehnice din ghid.</span></p><p class="flex gap-3"><span class="font-extrabold text-moss">03</span><span>Revenim pentru clarificări și ofertă.</span></p></div>
-            <div class="mt-10 rounded-2xl border border-[#cbdacb] bg-white/55 p-5 text-sm leading-6 text-[#5a6c63]"><strong class="text-ink">Ai făcut verificarea?</strong><br />Valorile pentru puterea fotovoltaică și baterie se completează automat când alegi „Solicită o ofertă” din rezultat.</div>
-          </div>
-
-          <form id="contact-form" data-endpoint={contactEndpoint} data-email={contactEmail} class="p-7 sm:p-10 lg:p-12" novalidate>
-            <div class="grid gap-6 sm:grid-cols-2">
-              <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Nume și prenume <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="text" name="name" autocomplete="name" placeholder="Cum te numești?" required /></label>
-              <label class="block"><span class="text-sm font-extrabold text-ink">Telefon <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="tel" name="phone" autocomplete="tel" placeholder="07xx xxx xxx" required /></label>
-              <label class="block"><span class="text-sm font-extrabold text-ink">E-mail <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="email" name="email" autocomplete="email" placeholder="nume@exemplu.ro" required /></label>
-              <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Județ și localitate <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="text" name="location" autocomplete="address-level2" placeholder="ex. Giurgiu, Bolintin-Vale" required /></label>
-              <label class="block"><span class="text-sm font-extrabold text-ink">Putere fotovoltaică</span><span class="relative mt-2 block"><input id="contact-pv" class="field-input pr-16" type="number" min="0" step="0.1" name="pvPower" placeholder="ex. 6" /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
-              <label class="block"><span class="text-sm font-extrabold text-ink">Capacitate dorită</span><span class="relative mt-2 block"><input id="contact-storage" class="field-input pr-16" type="number" min="0" step="0.1" name="storageCapacity" placeholder="minimum 12" /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kWh</span></span></label>
-              <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Cum preferi să fii contactat?</span><select class="field-input mt-2" name="preferredContact"><option value="Telefon">Telefon</option><option value="E-mail">E-mail</option><option value="Oricare">Oricare</option></select></label>
-              <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Detalii utile</span><textarea class="field-input mt-2 min-h-32 resize-y" name="message" placeholder="Modelul invertorului, consumul mediu sau orice întrebare ai pentru noi."></textarea></label>
-            </div>
-            <label class="mt-6 flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#5f7067]"><input class="mt-1 h-5 w-5 shrink-0 accent-[#2f795e]" type="checkbox" name="consent" required /><span>Sunt de acord ca datele introduse să fie folosite de Nexum Energy exclusiv pentru a răspunde solicitării mele. <span aria-hidden="true" class="text-moss">*</span></span></label>
-            <div id="contact-status" class="mt-5 hidden rounded-xl border px-4 py-3 text-sm font-semibold" role="status" aria-live="polite"></div>
-            <button type="submit" class="mt-7 min-h-14 w-full rounded-full bg-forest px-7 font-extrabold text-white shadow-[0_12px_30px_rgba(21,63,49,0.2)] transition hover:bg-moss sm:w-auto">Trimite solicitarea <span class="ml-2" aria-hidden="true">→</span></button>
-            <p class="mt-4 text-xs leading-5 text-[#7b8982]">Câmpurile marcate cu * sunt obligatorii. Nu încărca documente sau date personale sensibile în mesaj.</p>
-          </form>
-        </div>
-      </section>
-
       <section id="intrebari" class="section-pad border-t border-[#dde5de] bg-white/55">
         <div class="page-shell grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
           <div><span class="eyebrow">Întrebări frecvente</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.05em] text-ink sm:text-5xl">Clar, înainte de a începe.</h2></div>
@@ -272,7 +200,7 @@ const faqs = [
     <footer class="bg-[#0e2b22] py-10 text-white">
       <div class="page-shell flex flex-col gap-8 border-b border-white/12 pb-9 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3"><img src={assetPath('nexum-energy-logo.png')} width="52" height="52" alt="" class="h-12 w-12 rounded-lg bg-white object-contain p-1" /><div><p class="text-sm font-extrabold tracking-[0.12em] uppercase">Nexum Energy</p><p class="mt-1 text-xs text-white/55">Energie regenerabilă · stocare · autonomie</p></div></div>
-        <div class="flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-white/75"><a href="#eligibilitate" class="hover:text-lime">Verifică eligibilitatea</a><a href="#documente" class="hover:text-lime">Documente</a><a href="#oferta" class="hover:text-lime">Solicită ofertă</a></div>
+        <div class="flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-white/75"><a href="#eligibilitate" class="hover:text-lime">Verifică eligibilitatea</a><a href="#documente" class="hover:text-lime">Documente</a><a href="#eligibilitate" class="hover:text-lime">Solicită oferta</a></div>
       </div>
       <div class="page-shell flex flex-col gap-4 pt-7 text-xs leading-5 text-white/48 sm:flex-row sm:justify-between"><p>© {new Date().getFullYear()} Nexum Energy. Toate drepturile rezervate.</p><p class="max-w-2xl">Informațiile și verificarea sunt orientative, pe baza ghidului furnizat. Condițiile finale, calendarul sesiunii și decizia de finanțare aparțin Administrației Fondului pentru Mediu.</p></div>
     </footer>
@@ -283,14 +211,12 @@ const faqs = [
         const steps = Array.from(document.querySelectorAll('.eligibility-step'));
         const nextButton = document.getElementById('next-step');
         const previousButton = document.getElementById('previous-step');
-        const calculateButton = document.getElementById('calculate-result');
+        const submitButton = document.getElementById('submit-eligibility');
         const stepAlert = document.getElementById('step-alert');
         const progressBar = document.getElementById('progress-bar');
         const progressItems = Array.from(document.querySelectorAll('.progress-item'));
-        const resultSection = document.getElementById('eligibility-result');
+        const formStatus = document.getElementById('form-status');
         let currentStep = 0;
-        let latestValues = null;
-        const formatLei = (value) => `${new Intl.NumberFormat('ro-RO', { maximumFractionDigits: 0 }).format(Math.max(0, value))} lei`;
         const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
         const setStep = (index, focusHeading = true) => {
@@ -298,7 +224,7 @@ const faqs = [
           steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== currentStep; });
           previousButton.classList.toggle('hidden', currentStep === 0);
           nextButton.classList.toggle('hidden', currentStep === steps.length - 1);
-          calculateButton.classList.toggle('hidden', currentStep !== steps.length - 1);
+          submitButton.classList.toggle('hidden', currentStep !== steps.length - 1);
           stepAlert.classList.add('hidden');
           progressBar.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
           progressItems.forEach((item, itemIndex) => {
@@ -321,119 +247,56 @@ const faqs = [
           const controls = Array.from(steps[currentStep].querySelectorAll('input, select, textarea'));
           for (const control of controls) {
             if (!control.checkValidity()) {
+              stepAlert.textContent = currentStep === 0 ? 'Alege un răspuns pentru fiecare întrebare înainte de a continua.' : 'Completează câmpurile obligatorii înainte de trimitere.';
               stepAlert.classList.remove('hidden'); control.reportValidity(); control.focus(); return false;
             }
           }
-          if (currentStep === steps.length - 1) {
-            const total = Number(eligibilityForm.elements.projectTotal.value);
-            const own = Number(eligibilityForm.elements.ownContribution.value);
-            if (own > total) {
-              stepAlert.textContent = 'Contribuția proprie nu poate depăși valoarea totală a proiectului.';
-              stepAlert.classList.remove('hidden'); eligibilityForm.elements.ownContribution.focus(); return false;
-            }
-          }
-          stepAlert.textContent = 'Alege un răspuns pentru fiecare întrebare înainte de a continua.';
           stepAlert.classList.add('hidden'); return true;
         };
 
         nextButton?.addEventListener('click', () => { if (validateCurrentStep()) setStep(currentStep + 1); });
         previousButton?.addEventListener('click', () => setStep(currentStep - 1));
 
-        eligibilityForm?.addEventListener('submit', (event) => {
+        eligibilityForm?.addEventListener('submit', async (event) => {
           event.preventDefault(); if (!validateCurrentStep()) return;
-          const data = new FormData(eligibilityForm);
-          const value = (name) => String(data.get(name) || '');
-          const total = Number(value('projectTotal'));
-          const own = Number(value('ownContribution'));
-          const pv = Number(value('pvPower'));
-          const storage = Number(value('storageCapacity'));
-          latestValues = { total, own, pv, storage };
-          const blockers = [];
-          const unknowns = [];
-          if (value('individual') !== 'yes') blockers.push('Programul este destinat persoanelor fizice.');
-          if (value('prosumator') === 'no') blockers.push('Este necesară calitatea de prosumator și contractul aferent locului de consum.');
-          if (value('prosumator') === 'unknown') unknowns.push('Calitatea de prosumator și titularul contractului.');
-          if (value('debts') === 'no') blockers.push('Obligațiile restante la bugetul de stat sau local trebuie stinse.');
-          if (value('debts') === 'unknown') unknowns.push('Situația obligațiilor fiscale de stat și locale.');
-          if (value('activities') === 'unseparated') blockers.push('Activitatea economică de la adresă trebuie să aibă consum contorizat separat de locuință.');
-          if (value('romania') !== 'yes') blockers.push('Proiectul trebuie implementat pe teritoriul României.');
-          if (value('existingStorage') === 'yes') blockers.push('Nu poți avea deja un sistem de stocare instalat la locul declarat.');
-          if (value('existingStorage') === 'unknown') unknowns.push('Existența unui sistem de stocare instalat la adresă.');
-          if (value('grid') === 'no') blockers.push('Sistemul fotovoltaic trebuie racordat la rețeaua de distribuție.');
-          if (value('grid') === 'unknown') unknowns.push('Racordarea sistemului fotovoltaic și certificatul de racordare.');
-          if (value('exclusive') === 'no') blockers.push('Bateria trebuie să deservească exclusiv locul de consum și producere declarat.');
-          if (value('exclusive') === 'unknown') unknowns.push('Consumatorii pe care îi va deservi bateria.');
-          if (value('newSystem') !== 'yes') blockers.push('Sistemul de stocare propus trebuie să fie nou.');
-          if (value('technology') === 'lead') blockers.push('Sistemele cu acumulatori plumb-acid nu sunt eligibile.');
-          if (value('technology') === 'unknown') unknowns.push('Tehnologia bateriei și absența plumbului.');
-          if (value('inverter') === 'no') blockers.push('Este necesar un invertor hibrid compatibil, existent sau inclus în proiect.');
-          if (value('inverter') === 'unknown') unknowns.push('Tipul și compatibilitatea invertorului.');
-          if (value('compatible') === 'no') blockers.push('Sistemul de stocare trebuie să fie compatibil cu instalația fotovoltaică.');
-          if (value('compatible') === 'unknown') unknowns.push('Compatibilitatea dintre baterie, invertor și sistemul fotovoltaic.');
-          if (value('warranty') === 'no') blockers.push('Garanția sistemului trebuie să fie de minimum 5 ani.');
-          if (value('warranty') === 'unknown') unknowns.push('Garanția comercială de minimum 5 ani.');
-          if (value('cycles') === 'no') blockers.push('Sistemul trebuie să ofere minimum 3.000 de cicluri.');
-          if (value('cycles') === 'unknown') unknowns.push('Numărul de cicluri garantat de producător.');
-          if (value('certified') === 'no') blockers.push('Componentele trebuie certificate de un organism acreditat SR EN/ISO 17065.');
-          if (value('certified') === 'unknown') unknowns.push('Certificatele componentelor conform SR EN/ISO 17065.');
-          if (storage < 12) blockers.push('Capacitatea propusă trebuie să fie de minimum 12 kWh.');
-
-          const grant = Math.min(total * 0.75, 15000, storage * 1250);
-          const minimumOwn = Math.max(0, total - grant);
-          const ownRatio = total > 0 ? own / total : 0;
-          const score = clamp(80 * ownRatio - 10, 0, 40) + clamp(storage, 0, 40) + clamp(pv, 0, 20);
-          const resultStatus = document.getElementById('result-status');
-          const kicker = document.getElementById('result-kicker');
-          const title = document.getElementById('result-title');
-          const summary = document.getElementById('result-summary');
-          if (blockers.length) {
-            resultStatus.dataset.tone = 'danger'; kicker.textContent = 'Neeligibil conform răspunsurilor'; title.textContent = 'Există criterii obligatorii neîndeplinite.'; summary.textContent = 'Ghidul cere îndeplinirea cumulativă a condițiilor. Unele situații pot fi corectate înainte de înscriere; verifică lista de mai jos.';
-          } else if (unknowns.length) {
-            resultStatus.dataset.tone = 'warning'; kicker.textContent = 'Eligibilitate de confirmat'; title.textContent = 'Profilul de bază se încadrează, dar lipsesc confirmări.'; summary.textContent = 'Nu ai indicat un criteriu care să te excludă direct. Confirmă punctele tehnice și documentele înainte de înscriere.';
-          } else {
-            resultStatus.dataset.tone = 'success'; kicker.textContent = 'Eligibil preliminar'; title.textContent = 'Răspunsurile tale respectă criteriile verificate.'; summary.textContent = 'Poți trece la validarea documentelor și la alegerea unei configurații tehnice împreună cu un instalator validat.';
-          }
-          const blockersWrap = document.getElementById('result-blockers-wrap');
-          const blockersList = document.getElementById('result-blockers');
-          blockersWrap.classList.toggle('hidden', blockers.length === 0); blockersList.replaceChildren(...blockers.map((item) => { const li = document.createElement('li'); li.textContent = item; return li; }));
-          const unknownWrap = document.getElementById('result-unknown-wrap');
-          const unknownList = document.getElementById('result-unknown');
-          unknownWrap.classList.toggle('hidden', unknowns.length === 0); unknownList.replaceChildren(...unknowns.map((item) => { const li = document.createElement('li'); li.textContent = item; return li; }));
-          document.getElementById('grant-value').textContent = formatLei(grant);
-          document.getElementById('own-value').textContent = formatLei(minimumOwn);
-          document.getElementById('score-value').textContent = `${new Intl.NumberFormat('ro-RO', { maximumFractionDigits: 1 }).format(score)} / 100`;
-          const financeNote = document.getElementById('finance-note');
-          financeNote.textContent = own < minimumOwn ? `Contribuția planificată este cu ${formatLei(minimumOwn - own)} sub minimul estimat pentru această valoare de proiect. Ajustează contribuția sau bugetul.` : `Contribuția proprie declarată reprezintă ${new Intl.NumberFormat('ro-RO', { maximumFractionDigits: 1 }).format(ownRatio * 100)}% din proiect. Punctajul nu garantează selecția; proiectele se ordonează în limita bugetului sesiunii.`;
-          resultSection.hidden = false; resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        document.getElementById('restart-check')?.addEventListener('click', () => { eligibilityForm.reset(); resultSection.hidden = true; latestValues = null; setStep(0); });
-        document.getElementById('result-offer')?.addEventListener('click', () => { if (!latestValues) return; document.getElementById('contact-pv').value = latestValues.pv || ''; document.getElementById('contact-storage').value = latestValues.storage || ''; });
-
-        const contactForm = document.getElementById('contact-form');
-        const contactStatus = document.getElementById('contact-status');
-        contactForm?.addEventListener('submit', async (event) => {
-          event.preventDefault();
-          if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
-          const submitButton = contactForm.querySelector('button[type="submit"]');
-          const formData = new FormData(contactForm);
-          const endpoint = contactForm.dataset.endpoint;
-          const email = contactForm.dataset.email;
-          const showStatus = (message, tone) => { contactStatus.textContent = message; contactStatus.className = `mt-5 rounded-xl border px-4 py-3 text-sm font-semibold ${tone === 'success' ? 'border-[#a7c99b] bg-[#f2f8ef] text-[#25523d]' : 'border-[#e3b1a1] bg-[#fff3ef] text-[#7b382b]'}`; };
+          const formData = new FormData(eligibilityForm);
+          const endpoint = eligibilityForm.dataset.endpoint;
+          const email = eligibilityForm.dataset.email;
+          const showStatus = (message, tone) => {
+            formStatus.textContent = message;
+            formStatus.className = `mt-5 rounded-xl border px-4 py-3 text-sm font-semibold ${tone === 'success' ? 'border-[#a7c99b] bg-[#f2f8ef] text-[#25523d]' : 'border-[#e3b1a1] bg-[#fff3ef] text-[#7b382b]'}`;
+          };
           if (endpoint) {
             submitButton.disabled = true; submitButton.textContent = 'Se trimite…';
             try {
               const response = await fetch(endpoint, { method: 'POST', body: formData, headers: { Accept: 'application/json' } });
               if (!response.ok) throw new Error('Request failed');
-              contactForm.reset(); showStatus('Solicitarea a fost trimisă. Îți mulțumim — revenim cât mai curând.', 'success');
-            } catch { showStatus('Solicitarea nu a putut fi trimisă. Te rugăm să încerci din nou sau să folosești e-mailul.', 'error'); }
-            finally { submitButton.disabled = false; submitButton.innerHTML = 'Trimite solicitarea <span class="ml-2" aria-hidden="true">→</span>'; }
+              eligibilityForm.reset(); showStatus('Solicitarea a fost trimisă. Verificăm eligibilitatea și revenim cu răspunsul și oferta.', 'success');
+            } catch { showStatus('Solicitarea nu a putut fi trimisă. Încearcă din nou sau contactează-ne direct.', 'error'); }
+            finally { submitButton.disabled = false; submitButton.innerHTML = 'Trimite pentru verificare <span aria-hidden="true">→</span>'; }
             return;
           }
-          const lines = [`Nume: ${formData.get('name')}`, `Telefon: ${formData.get('phone')}`, `E-mail: ${formData.get('email')}`, `Localitate: ${formData.get('location')}`, `Putere fotovoltaică: ${formData.get('pvPower') || 'nespecificată'} kW`, `Capacitate dorită: ${formData.get('storageCapacity') || 'nespecificată'} kWh`, `Contact preferat: ${formData.get('preferredContact')}`, '', String(formData.get('message') || '')];
-          const recipient = email ? encodeURIComponent(email) : '';
-          window.location.href = `mailto:${recipient}?subject=${encodeURIComponent('Solicitare ofertă – sistem de stocare')}&body=${encodeURIComponent(lines.join('\n'))}`;
-          showStatus(email ? 'Am deschis aplicația ta de e-mail cu solicitarea completată.' : 'Am pregătit solicitarea în aplicația de e-mail. Adaugă adresa Nexum Energy înainte de trimitere.', 'success');
+          const answers = {
+            yes: 'Da', no: 'Nu', unknown: 'Nu sunt sigur', none: 'Nu',
+            separate: 'Da, cu contor separat', unseparated: 'Da, fără contor separat',
+          };
+          const answer = (name) => answers[String(formData.get(name))] || String(formData.get(name) || 'nespecificat');
+          const lines = [
+            'Solicitare verificare eligibilitate', '',
+            `Nume: ${formData.get('name')}`,
+            `Telefon: ${formData.get('phone')}`,
+            `E-mail: ${formData.get('email') || 'nespecificat'}`,
+            `Localitate: ${formData.get('location')}`,
+            `Putere fotovoltaică: ${formData.get('pvPower') || 'nespecificată'} kW`,
+            `Invertor: ${formData.get('inverter') || 'nespecificat'}`, '',
+            `Persoană fizică/prosumator/contract pe nume: ${answer('prosumator')}`,
+            `Fără restanțe fiscale: ${answer('debts')}`,
+            `Locuință în România și sistem racordat: ${answer('grid')}`,
+            `Baterie deja instalată: ${answer('existingStorage')}`,
+            `Activitate economică la adresă: ${answer('activities')}`,
+          ];
+          window.location.href = `mailto:${email || ''}?subject=${encodeURIComponent('Verificare eligibilitate – sistem de stocare')}&body=${encodeURIComponent(lines.join('\n'))}`;
+          showStatus(email ? 'Am deschis aplicația de e-mail cu solicitarea completată.' : 'Solicitarea este pregătită în aplicația de e-mail. Adaugă adresa Nexum Energy înainte de trimitere.', 'success');
         });
         setStep(0, false);
       })();
