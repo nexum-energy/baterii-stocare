@@ -3,7 +3,7 @@ import '../styles/global.css';
 
 const basePath = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 const assetPath = (filename: string) => `${basePath}${filename}`;
-const ogImageUrl = new URL(assetPath('og.png'), 'https://nexum-energy.github.io').toString();
+const ogImageUrl = new URL(assetPath('og-premium.png'), 'https://nexum-energy.github.io').toString();
 const contactEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT ?? '';
 const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
 
@@ -36,7 +36,6 @@ const faqs = [
   ['Pot aplica dacă am deja o baterie instalată?', 'Nu, conform art. 15 alin. (2), solicitantul nu este eligibil dacă are deja un sistem de stocare instalat la locul de implementare declarat.'],
   ['Este obligatoriu un invertor hibrid?', 'Da. Dacă sistemul fotovoltaic nu are deja un invertor hibrid compatibil, proiectul poate include achiziția și instalarea lui până la punerea în funcțiune a sistemului de stocare.'],
   ['Ce capacitate minimă trebuie să aibă bateria?', 'Minimum 12 kWh. Tehnologia trebuie să fie fără plumb, garanția de minimum 5 ani, iar numărul de cicluri de minimum 3.000.'],
-  ['Cum se acordă proiectele?', 'După închiderea sesiunii, proiectele sunt ordonate descrescător după punctaj, în limita bugetului. Punctajul ia în calcul contribuția proprie, capacitatea de stocare și puterea fotovoltaică instalată.'],
   ['Verificarea Nexum Energy garantează finanțarea?', 'Nu. Analizăm preliminar răspunsurile tale și cerințele din ghid, apoi revenim cu recomandarea noastră. Eligibilitatea și selecția finală sunt stabilite de AFM după verificarea documentelor.'],
 ];
 ---
@@ -55,6 +54,9 @@ const faqs = [
     <meta property="og:image:alt" content="Nexum Energy — finanțare pentru baterii de stocare" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href={assetPath('nexum-energy-logo.png')} />
     <title>Finanțare baterii de stocare | Nexum Energy</title>
   </head>
@@ -72,31 +74,26 @@ const faqs = [
         <a class="transition hover:text-moss" href="#documente">Documente</a>
         <a class="transition hover:text-moss" href="#intrebari">Întrebări</a>
       </nav>
-      <a href="#eligibilitate" class="rounded-full bg-forest px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-moss">Verifică eligibilitatea</a>
+      <a href="#eligibilitate" class="rounded-md bg-forest px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-moss">Verifică eligibilitatea</a>
     </header>
 
     <main id="continut">
-      <section id="program" class="page-shell grid items-center gap-12 py-14 lg:grid-cols-[1.04fr_0.96fr] lg:py-24">
-        <div>
-          <span class="eyebrow">Program pentru prosumatori casnici</span>
-          <h1 class="mt-7 max-w-3xl text-[clamp(3rem,7vw,5.9rem)] leading-[0.94] font-extrabold tracking-[-0.065em] text-ink">Păstrează energia. <span class="text-moss">Folosește-o când ai nevoie.</span></h1>
-          <p class="mt-7 max-w-2xl text-lg leading-8 text-[#53635c]">Verifică în câteva minute dacă îndeplinești condițiile din ghidul de finanțare pentru un sistem nou de stocare și află ce sprijin ai putea primi.</p>
-          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-full bg-forest px-7 text-base font-extrabold text-white shadow-[0_15px_35px_rgba(21,63,49,0.2)] transition hover:-translate-y-0.5 hover:bg-moss">Începe verificarea <span aria-hidden="true" class="ml-3">→</span></a>
-            <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-full border border-[#c9d5cc] bg-white/70 px-7 text-base font-bold text-forest transition hover:border-moss hover:bg-white">Solicită verificarea</a>
+      <section id="program" class="hero-premium relative isolate min-h-[720px] overflow-hidden text-white">
+        <img src={assetPath('hero-storage-premium.png')} alt="Baterie modulară de stocare conectată la o locuință cu panouri fotovoltaice" class="absolute inset-0 -z-20 h-full w-full object-cover object-[67%_center]" fetchpriority="high" />
+        <div class="hero-overlay absolute inset-0 -z-10"></div>
+        <div class="page-shell flex min-h-[720px] flex-col justify-center py-20">
+          <div class="max-w-3xl">
+            <span class="eyebrow eyebrow-light">Program pentru prosumatori casnici</span>
+            <h1 class="font-display mt-8 text-[clamp(3.8rem,7.6vw,7.2rem)] leading-[0.88] font-medium tracking-[-0.055em]">Energia ta.<br /><span class="text-[#d9dfc9]">Păstrată inteligent.</span></h1>
+            <p class="mt-8 max-w-xl text-lg leading-8 text-white/74">Soluții de stocare pentru locuințe, configurate profesionist și pregătite pentru programul de finanțare AFM.</p>
+            <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+              <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-md bg-[#d0d9b3] px-7 text-base font-bold text-[#10231c] transition hover:bg-white">Verifică eligibilitatea <span aria-hidden="true" class="ml-3">→</span></a>
+              <a href="#documente" class="inline-flex min-h-14 items-center justify-center rounded-md border border-white/35 bg-white/5 px-7 text-base font-semibold text-white backdrop-blur-sm transition hover:border-white/70 hover:bg-white/10">Vezi condițiile programului</a>
+            </div>
           </div>
-          <dl class="mt-12 grid grid-cols-3 gap-5 border-t border-[#dce4dc] pt-7">
-            {metrics.map(([value, label]) => <div><dt class="text-[clamp(1.25rem,3vw,1.75rem)] font-extrabold tracking-[-0.04em] text-forest">{value}</dt><dd class="mt-1 text-xs leading-5 text-[#66766e] sm:text-sm">{label}</dd></div>)}
+          <dl class="mt-20 grid max-w-3xl grid-cols-3 gap-5 border-t border-white/22 pt-7">
+            {metrics.map(([value, label]) => <div><dt class="font-display text-[clamp(1.7rem,3vw,2.4rem)] font-medium tracking-[-0.03em] text-white">{value}</dt><dd class="mt-1 text-xs leading-5 text-white/60 sm:text-sm">{label}</dd></div>)}
           </dl>
-        </div>
-        <div class="solar-grid" aria-label="Ilustrație abstractă cu panouri fotovoltaice și sistem de stocare" role="img">
-          <div class="absolute top-7 left-7 max-w-52 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold tracking-[0.1em] text-white uppercase backdrop-blur">Solar → casă → baterie</div>
-          <div class="battery-card">
-            <div class="flex items-center justify-between"><span class="text-xs font-bold tracking-[0.13em] text-white/60 uppercase">Stocare disponibilă</span><span class="rounded-full bg-lime/15 px-2.5 py-1 text-xs font-extrabold text-lime">Activ</span></div>
-            <div class="mt-5 flex items-end justify-between gap-4"><strong class="text-4xl tracking-[-0.05em]">76%</strong><span class="pb-1 text-sm text-white/60">9,1 / 12 kWh</span></div>
-            <div class="battery-level mt-4"></div>
-            <p class="mt-4 text-sm leading-6 text-white/66">Energie produsă ziua, pregătită pentru consumul de seară.</p>
-          </div>
         </div>
       </section>
 
@@ -114,16 +111,16 @@ const faqs = [
           <p class="max-w-2xl text-lg leading-8 text-[#5b6c64] lg:justify-self-end">Sunt eligibile achiziția unui sistem de minimum 12 kWh, montajul, punerea în funcțiune și TVA-ul aferent. Cheltuielile trebuie realizate după aprobarea finanțării de către AFM.</p>
         </div>
         <div class="mt-12 grid gap-4 md:grid-cols-3">
-          <article class="rounded-3xl border border-[#d8e2da] bg-white p-7"><span class="text-xs font-extrabold tracking-[0.13em] text-moss uppercase">01 · Achiziție</span><h3 class="mt-5 text-2xl font-extrabold tracking-[-0.03em]">Sistem de stocare nou</h3><p class="mt-3 leading-7 text-[#65756d]">Capacitate de minimum 12 kWh, tehnologie fără plumb și compatibilitate cu instalația existentă.</p></article>
-          <article class="rounded-3xl border border-[#d8e2da] bg-white p-7"><span class="text-xs font-extrabold tracking-[0.13em] text-moss uppercase">02 · Instalare</span><h3 class="mt-5 text-2xl font-extrabold tracking-[-0.03em]">Montaj și punere în funcțiune</h3><p class="mt-3 leading-7 text-[#65756d]">Lucrările aferente sistemului de stocare sunt incluse între cheltuielile eligibile.</p></article>
-          <article class="rounded-3xl border border-[#d8e2da] bg-forest p-7 text-white"><span class="text-xs font-extrabold tracking-[0.13em] text-lime uppercase">03 · Compatibilitate</span><h3 class="mt-5 text-2xl font-extrabold tracking-[-0.03em]">Invertor hibrid, dacă este necesar</h3><p class="mt-3 leading-7 text-white/65">Poate fi instalat până la punerea în funcțiune a bateriei. Costul lui nu este enumerat ca cheltuială eligibilă.</p></article>
+          <article class="rounded-lg border border-[#d8e2da] bg-white p-7"><span class="text-xs font-bold tracking-[0.16em] text-moss uppercase">01 · Achiziție</span><h3 class="mt-5 text-2xl font-bold tracking-[-0.03em]">Sistem de stocare nou</h3><p class="mt-3 leading-7 text-[#65756d]">Capacitate de minimum 12 kWh, tehnologie fără plumb și compatibilitate cu instalația existentă.</p></article>
+          <article class="rounded-lg border border-[#d8e2da] bg-white p-7"><span class="text-xs font-bold tracking-[0.16em] text-moss uppercase">02 · Instalare</span><h3 class="mt-5 text-2xl font-bold tracking-[-0.03em]">Montaj și punere în funcțiune</h3><p class="mt-3 leading-7 text-[#65756d]">Lucrările aferente sistemului de stocare sunt incluse între cheltuielile eligibile.</p></article>
+          <article class="rounded-lg border border-[#d8e2da] bg-forest p-7 text-white"><span class="text-xs font-bold tracking-[0.16em] text-lime uppercase">03 · Compatibilitate</span><h3 class="mt-5 text-2xl font-bold tracking-[-0.03em]">Invertor hibrid, dacă este necesar</h3><p class="mt-3 leading-7 text-white/65">Poate fi instalat până la punerea în funcțiune a bateriei. Costul lui nu este enumerat ca cheltuială eligibilă.</p></article>
         </div>
       </section>
 
       <section id="eligibilitate" class="section-pad bg-mist">
         <div class="page-shell">
           <div class="mx-auto max-w-3xl text-center"><span class="eyebrow">Chestionar de eligibilitate</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.055em] text-ink sm:text-6xl">Aflăm rapid dacă te încadrezi.</h2><p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#5d6e66]">Două etape scurte. Ne trimiți situația actuală și datele de contact, iar noi verificăm eligibilitatea și revenim cu răspunsul și oferta potrivită.</p></div>
-          <div class="mx-auto mt-12 max-w-5xl overflow-hidden rounded-[2rem] border border-[#cfdbd1] bg-white shadow-[0_25px_70px_rgba(16,35,28,0.1)]">
+          <div class="mx-auto mt-12 max-w-5xl overflow-hidden rounded-lg border border-[#cbd6cd] bg-white shadow-[0_24px_70px_rgba(16,35,28,0.08)]">
             <div class="border-b border-[#e0e7e1] px-5 py-6 sm:px-9">
               <div class="grid grid-cols-2 gap-4" aria-label="Progres chestionar">
                 {['Eligibilitate', 'Date de contact'].map((label, index) => (
@@ -163,9 +160,9 @@ const faqs = [
                 <div id="form-status" class="mt-5 hidden rounded-xl border px-4 py-3 text-sm font-semibold" role="status" aria-live="polite"></div>
               </fieldset>
               <div class="mt-10 flex flex-col-reverse gap-3 border-t border-[#e5ebe6] pt-7 sm:flex-row sm:justify-between">
-                <button id="previous-step" type="button" class="hidden min-h-13 rounded-full border border-[#ccd8cf] px-6 font-extrabold text-forest transition hover:border-moss">Înapoi</button>
-                <button id="next-step" type="button" class="min-h-13 rounded-full bg-forest px-7 font-extrabold text-white transition hover:bg-moss sm:ml-auto">Continuă <span aria-hidden="true">→</span></button>
-                <button id="submit-eligibility" type="submit" class="hidden min-h-13 rounded-full bg-lime px-7 font-extrabold text-forest transition hover:bg-[#c7ef75] disabled:cursor-wait disabled:opacity-70 sm:ml-auto">Trimite pentru verificare <span aria-hidden="true">→</span></button>
+                <button id="previous-step" type="button" class="hidden min-h-13 rounded-md border border-[#ccd8cf] px-6 font-bold text-forest transition hover:border-moss">Înapoi</button>
+                <button id="next-step" type="button" class="min-h-13 rounded-md bg-forest px-7 font-bold text-white transition hover:bg-moss sm:ml-auto">Continuă <span aria-hidden="true">→</span></button>
+                <button id="submit-eligibility" type="submit" class="hidden min-h-13 rounded-md bg-lime px-7 font-bold text-forest transition hover:bg-[#d5dcc0] disabled:cursor-wait disabled:opacity-70 sm:ml-auto">Trimite pentru verificare <span aria-hidden="true">→</span></button>
               </div>
               <p class="mt-4 text-xs leading-5 text-[#7b8982]">Câmpurile marcate cu * sunt obligatorii. Eligibilitatea finală este stabilită de AFM după verificarea documentelor.</p>
             </form>
@@ -176,7 +173,7 @@ const faqs = [
       <section id="documente" class="section-pad page-shell">
         <div class="grid gap-12 lg:grid-cols-[0.74fr_1.26fr]">
           <div class="lg:sticky lg:top-8 lg:self-start"><span class="eyebrow">Dosarul de înscriere</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.05em] text-ink sm:text-5xl">Pregătește documentele înainte de deschiderea sesiunii.</h2><p class="mt-5 leading-7 text-[#65756d]">Aplicația nu permite modificarea sau înlocuirea documentelor după finalizarea înscrierii. Verifică numele, adresa și valabilitatea fiecărui act.</p><a href={assetPath('ghid-finantare-stocare.docx')} download class="mt-7 inline-flex min-h-13 items-center rounded-full border border-[#bfcfc2] px-6 font-extrabold text-forest transition hover:border-moss hover:bg-mist">Descarcă ghidul folosit <span class="ml-3" aria-hidden="true">↓</span></a></div>
-          <ol class="overflow-hidden rounded-3xl border border-[#d7e1d9] bg-white">
+          <ol class="overflow-hidden rounded-lg border border-[#d7e1d9] bg-white">
             {documents.map(([title, description], index) => <li class="grid gap-3 border-b border-[#e3e9e4] p-5 last:border-0 sm:grid-cols-[3rem_1fr] sm:p-6"><span class="grid h-10 w-10 place-items-center rounded-full bg-mist text-sm font-extrabold text-moss">{String(index + 1).padStart(2, '0')}</span><div><h3 class="font-extrabold text-ink">{title}</h3><p class="mt-1 text-sm leading-6 text-[#687870]">{description}</p></div></li>)}
           </ol>
         </div>
@@ -192,7 +189,7 @@ const faqs = [
       <section id="intrebari" class="section-pad border-t border-[#dde5de] bg-white/55">
         <div class="page-shell grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
           <div><span class="eyebrow">Întrebări frecvente</span><h2 class="mt-5 text-4xl font-extrabold tracking-[-0.05em] text-ink sm:text-5xl">Clar, înainte de a începe.</h2></div>
-          <div class="space-y-3">{faqs.map(([question, answer]) => <details class="group rounded-2xl border border-[#d8e1da] bg-white p-5 sm:p-6"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-extrabold text-ink"><span>{question}</span><span class="faq-plus grid h-8 w-8 shrink-0 place-items-center rounded-full bg-mist text-xl font-normal text-moss" aria-hidden="true">+</span></summary><p class="mt-4 max-w-3xl pr-10 text-sm leading-7 text-[#64756c]">{answer}</p></details>)}</div>
+          <div class="space-y-3">{faqs.map(([question, answer]) => <details class="group rounded-lg border border-[#d8e1da] bg-white p-5 sm:p-6"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-bold text-ink"><span>{question}</span><span class="faq-plus grid h-8 w-8 shrink-0 place-items-center rounded-full bg-mist text-xl font-normal text-moss" aria-hidden="true">+</span></summary><p class="mt-4 max-w-3xl pr-10 text-sm leading-7 text-[#64756c]">{answer}</p></details>)}</div>
         </div>
       </section>
     </main>
