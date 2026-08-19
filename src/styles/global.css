@@ -8,7 +8,7 @@
   --color-mist: #eef1ec;
   --color-cream: #f5f4ef;
   --font-sans: "Manrope", "Segoe UI", sans-serif;
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Manrope", "Segoe UI", sans-serif;
 }
 
 :root {
@@ -27,6 +27,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
+  letter-spacing: -0.01em;
   background:
     radial-gradient(circle at 92% 8%, rgb(198 207 170 / 0.12), transparent 26rem),
     var(--color-cream);
@@ -167,7 +168,7 @@ body {
 h1,
 h2 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
   text-wrap: balance;
 }
 
@@ -194,7 +195,8 @@ textarea {
 }
 
 h2 {
-  letter-spacing: -0.045em;
+  line-height: 1.02;
+  letter-spacing: -0.055em;
 }
 
 .eyebrow {
@@ -238,7 +240,7 @@ h2 {
 
 .eligibility-step legend {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .option-card {
