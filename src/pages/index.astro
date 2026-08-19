@@ -89,6 +89,7 @@ const faqs = [
       </a>
       <nav class="hidden items-center gap-8 text-sm font-semibold text-white/70 lg:flex" aria-label="Secțiuni pagină">
         <a class="transition hover:text-white" href="#program">Programul</a>
+        <a class="transition hover:text-white" href="#bateria-360">Bateria</a>
         <a class="transition hover:text-white" href="#eligibilitate">Eligibilitate</a>
         <a class="transition hover:text-white" href="#documente">Documente</a>
         <a class="transition hover:text-white" href="#intrebari">Întrebări</a>
@@ -97,17 +98,12 @@ const faqs = [
     </header>
 
     <main id="continut">
-      <section id="program" class="hero-premium relative isolate min-h-[900px] overflow-hidden text-white" data-battery-frames={JSON.stringify(batteryViews)}>
+      <section id="program" class="hero-premium relative isolate min-h-[900px] overflow-hidden text-white">
         <div class="hero-product-scene absolute inset-0 -z-20 overflow-hidden">
           <div class="hero-product-aura" aria-hidden="true"></div>
-          <img id="battery-viewer-image" src={batteryViews[2]} alt="Baterie modulară albă pentru stocarea energiei fotovoltaice, vedere din stânga" class="hero-product-image" draggable="false" fetchpriority="high" />
+          <img src={batteryViews[2]} alt="Baterie modulară albă pentru stocarea energiei fotovoltaice" class="hero-product-image" draggable="false" fetchpriority="high" />
         </div>
         <div class="hero-overlay absolute inset-0 -z-10"></div>
-        <button id="battery-viewer-control" type="button" class="battery-drag-hint" aria-label="Schimbă unghiul bateriei" title="Apasă sau trage cu mouse-ul pentru a roti bateria">
-          <span class="battery-rotation-mark">360°</span>
-          <span><strong>Trage pentru a roti</strong><small>Mișcă produsul stânga–dreapta</small></span>
-          <span class="battery-drag-arrows" aria-hidden="true">↔</span>
-        </button>
         <div class="page-shell relative z-10 flex min-h-[900px] flex-col justify-center pt-36 pb-16">
           <div class="max-w-[49rem]">
             <span class="eyebrow eyebrow-light">Program AFM · fonduri nerambursabile</span>
@@ -135,6 +131,32 @@ const faqs = [
           <p class="flex items-center gap-4 border-b border-[#dbe4dc] py-6 sm:border-r sm:border-b-0 sm:px-6 sm:first:pl-0"><span class="text-xs font-bold tracking-[0.16em] text-moss">01</span> Finanțare nerambursabilă</p>
           <p class="flex items-center gap-4 border-b border-[#dbe4dc] py-6 sm:border-r sm:border-b-0 sm:px-6"><span class="text-xs font-bold tracking-[0.16em] text-moss">02</span> Baterie și montaj eligibile</p>
           <p class="flex items-center gap-4 py-6 sm:pl-6"><span class="text-xs font-bold tracking-[0.16em] text-moss">03</span> Verificare și ofertă personalizată</p>
+        </div>
+      </section>
+
+      <section id="bateria-360" class="battery-showcase section-pad overflow-hidden text-white">
+        <div class="page-shell grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
+          <div class="max-w-lg">
+            <span class="eyebrow eyebrow-light">Prezentare interactivă</span>
+            <p class="mt-9 text-xs font-bold tracking-[0.2em] text-[#cbd5b1] uppercase">ESA3-10K · sistem modular</p>
+            <h2 class="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-6xl">Rotește bateria. Privește produsul.</h2>
+            <p class="mt-7 text-lg leading-8 text-white/65">Ține apăsat pe baterie și trage stânga–dreapta. Poți folosi și comenzile de sub produs pentru a schimba unghiul.</p>
+            <div class="mt-10 border-t border-white/14 pt-6 text-sm leading-7 text-white/55">
+              <p><span class="mr-3 font-bold text-[#cbd5b1]">01</span> Apasă și ține cursorul pe produs</p>
+              <p><span class="mr-3 font-bold text-[#cbd5b1]">02</span> Trage spre stânga sau spre dreapta</p>
+            </div>
+          </div>
+
+          <div id="battery-360-viewer" class="battery-viewer-stage" data-battery-frames={JSON.stringify(batteryViews)} tabindex="0" role="group" aria-label="Vizualizare interactivă a bateriei, vedere din stânga">
+            <div class="battery-viewer-aura" aria-hidden="true"></div>
+            <img id="battery-360-image" src={batteryViews[2]} alt="Baterie modulară albă pentru stocarea energiei fotovoltaice, vedere din stânga" class="battery-viewer-product" draggable="false" loading="lazy" />
+            <p class="battery-viewer-drag"><span aria-hidden="true">↔</span> Ține apăsat și trage</p>
+            <div class="battery-viewer-toolbar">
+              <button id="battery-view-previous" type="button" aria-label="Unghiul anterior al bateriei">←</button>
+              <div><strong>360°</strong><span id="battery-view-label" aria-live="polite">Vedere din stânga</span></div>
+              <button id="battery-view-next" type="button" aria-label="Unghiul următor al bateriei">→</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -251,9 +273,11 @@ const faqs = [
           }, reducedMotion ? 80 : 1500);
         }
 
-        const batteryStage = document.getElementById('program');
-        const batteryImage = document.getElementById('battery-viewer-image');
-        const batteryControl = document.getElementById('battery-viewer-control');
+        const batteryStage = document.getElementById('battery-360-viewer');
+        const batteryImage = document.getElementById('battery-360-image');
+        const batteryLabel = document.getElementById('battery-view-label');
+        const batteryPrevious = document.getElementById('battery-view-previous');
+        const batteryNext = document.getElementById('battery-view-next');
         if (batteryStage && batteryImage) {
           const frames = JSON.parse(batteryStage.dataset.batteryFrames || '[]');
           const frameLabels = ['vedere din dreapta', 'vedere frontală', 'vedere din stânga'];
@@ -270,31 +294,29 @@ const faqs = [
             frameIndex = boundedIndex;
             batteryImage.src = frames[frameIndex];
             batteryImage.alt = `Baterie modulară albă pentru stocarea energiei fotovoltaice, ${frameLabels[frameIndex]}`;
-            const restingOpacity = window.innerWidth < 768 ? 0.5 : 1;
             batteryImage.animate(
-              [{ opacity: Math.min(restingOpacity, 0.42), transform: 'translateY(-50%) scale(0.985)' }, { opacity: restingOpacity, transform: 'translateY(-50%) scale(1)' }],
+              [{ opacity: 0.48, transform: 'translate(-50%, -50%) scale(0.975)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
               { duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 180, easing: 'ease-out' },
             );
-            batteryControl?.setAttribute('aria-label', `Baterie: ${frameLabels[frameIndex]}. Apasă pentru unghiul următor.`);
+            batteryStage.setAttribute('aria-label', `Vizualizare interactivă a bateriei, ${frameLabels[frameIndex]}`);
+            if (batteryLabel) batteryLabel.textContent = frameLabels[frameIndex].replace('vedere', 'Vedere');
           };
 
           batteryStage.addEventListener('pointerdown', (event) => {
             if (event.pointerType === 'mouse' && event.button !== 0) return;
-            if (event.target.closest('a, button, input, select, textarea, label')) return;
-            const bounds = batteryStage.getBoundingClientRect();
-            if (event.clientX < bounds.left + bounds.width * 0.48) return;
+            if (event.target instanceof Element && event.target.closest('button')) return;
             hasInteracted = true;
             isDragging = true;
             dragStartX = event.clientX;
             dragStartFrame = frameIndex;
-            batteryStage.classList.add('is-rotating');
+            batteryStage.classList.add('is-dragging');
             batteryStage.setPointerCapture?.(event.pointerId);
             event.preventDefault();
           });
 
           batteryStage.addEventListener('pointermove', (event) => {
             if (!isDragging) return;
-            const step = window.innerWidth < 768 ? 52 : 82;
+            const step = window.innerWidth < 768 ? 48 : 76;
             const movedFrames = Math.round((event.clientX - dragStartX) / step);
             setBatteryFrame(dragStartFrame - movedFrames);
           });
@@ -302,20 +324,31 @@ const faqs = [
           const stopBatteryDrag = (event) => {
             if (!isDragging) return;
             isDragging = false;
-            batteryStage.classList.remove('is-rotating');
+            batteryStage.classList.remove('is-dragging');
             batteryStage.releasePointerCapture?.(event.pointerId);
           };
           batteryStage.addEventListener('pointerup', stopBatteryDrag);
           batteryStage.addEventListener('pointercancel', stopBatteryDrag);
-          batteryControl?.addEventListener('click', () => {
-            hasInteracted = true;
-            setBatteryFrame(frameIndex === 0 ? frames.length - 1 : frameIndex - 1);
+          batteryPrevious?.addEventListener('click', () => { hasInteracted = true; setBatteryFrame(frameIndex === 0 ? frames.length - 1 : frameIndex - 1); });
+          batteryNext?.addEventListener('click', () => { hasInteracted = true; setBatteryFrame(frameIndex === frames.length - 1 ? 0 : frameIndex + 1); });
+          batteryStage.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') { event.preventDefault(); hasInteracted = true; batteryPrevious?.click(); }
+            if (event.key === 'ArrowRight') { event.preventDefault(); hasInteracted = true; batteryNext?.click(); }
           });
 
           if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(1); }, 2800);
-            window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(0); }, 3500);
-            window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(2); }, 4300);
+            const startBatteryDemo = () => {
+              window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(1); }, 350);
+              window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(0); }, 1050);
+              window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(2); }, 1850);
+            };
+            const observer = new IntersectionObserver((entries) => {
+              if (entries.some((entry) => entry.isIntersecting)) {
+                observer.disconnect();
+                startBatteryDemo();
+              }
+            }, { threshold: 0.35 });
+            observer.observe(batteryStage);
           }
         }
 
