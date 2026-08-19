@@ -227,6 +227,12 @@ const faqs = [
                         <div class:list={['mt-3 grid gap-2', question.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3']} role="radiogroup" aria-labelledby={`${question.name}-label`}>
                           {question.options.map(([value, label], optionIndex) => <label class="option-card"><input type="radio" name={question.name} value={value} required={optionIndex === 0} disabled /><span class="text-sm font-bold leading-5">{label}</span></label>)}
                         </div>
+                        {question.name === 'debts' && (
+                          <div class="mt-3 rounded-sm border border-[#d5dfd3] bg-[#f4f7f1] px-4 py-3 text-[#52665b]" role="note">
+                            <p class="text-[0.68rem] font-extrabold tracking-[0.12em] text-moss uppercase">Extras din Ghidul de finanțare · Art. 15 alin. (1) lit. c)</p>
+                            <p class="mt-1.5 text-sm font-semibold leading-6">Solicitantul „nu are obligații restante la bugetul de stat și la bugetul local al unității administrativ-teritoriale în care își are domiciliul, precum și, după caz, la bugetul local al unității administrativ-teritoriale în care se implementează proiectul”.</p>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
