@@ -7,10 +7,11 @@ const ogImageUrl = new URL(assetPath('og-battery-luxury.png'), 'https://nexum-en
 const contactEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT ?? '';
 const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
 
-const metrics = [
-  ['15.000 lei', 'fonduri nerambursabile'],
-  ['75%', 'maximum finanțat'],
-  ['12 kWh', 'capacitate minimă'],
+const fundingFlow = [
+  ['01', 'AFM', 'Programul de finanțare'],
+  ['02', 'Până la 15.000 lei', 'Fonduri nerambursabile'],
+  ['03', 'Baterie de stocare', 'Achiziție și montaj'],
+  ['04', 'Economie', 'Mai multă energie folosită acasă'],
 ];
 
 const eligibilityQuestions = [
@@ -46,10 +47,10 @@ const faqs = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Poți obține până la 15.000 lei fonduri nerambursabile pentru o baterie de stocare. Verifică eligibilitatea pentru programul dedicat prosumatorilor casnici." />
+    <meta name="description" content="Banii de la stat se văd în energia ta. Prin programul AFM poți obține până la 15.000 lei fonduri nerambursabile pentru o baterie de stocare." />
     <meta name="theme-color" content="#153f31" />
-    <meta property="og:title" content="Până la 15.000 lei pentru bateria casei tale | Nexum Energy" />
-    <meta property="og:description" content="Verifică dacă poți obține fonduri nerambursabile pentru achiziția și montarea unui sistem de stocare a energiei." />
+    <meta property="og:title" content="Banii de la stat se văd în energia ta | Nexum Energy" />
+    <meta property="og:description" content="AFM → până la 15.000 lei nerambursabili → baterie de stocare → economie. Verifică dacă te încadrezi." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:alt" content="Nexum Energy — finanțare pentru baterii de stocare" />
@@ -59,7 +60,7 @@ const faqs = [
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href={assetPath('nexum-energy-logo.png')} />
-    <title>Fonduri nerambursabile pentru baterii de stocare | Nexum Energy</title>
+    <title>Banii de la stat se văd în energia ta | Nexum Energy</title>
   </head>
   <body>
     <div id="site-intro" class="site-intro" aria-hidden="true">
@@ -95,18 +96,24 @@ const faqs = [
         <img src={assetPath('hero-battery-editorial.png')} alt="Sistem premium de baterii modulare cu panouri fotovoltaice discrete în fundal" class="absolute inset-0 -z-20 h-full w-full object-cover object-[64%_center]" fetchpriority="high" />
         <div class="hero-overlay absolute inset-0 -z-10"></div>
         <div class="page-shell flex min-h-[820px] flex-col justify-center pt-36 pb-16">
-          <div class="max-w-[46rem]">
-            <span class="eyebrow eyebrow-light">Fonduri nerambursabile pentru prosumatori casnici</span>
-            <h1 class="font-display mt-9 text-[clamp(3.25rem,6.4vw,6.35rem)] leading-[0.91] font-semibold tracking-[-0.06em]">Poți obține până la<br /><span class="text-[#d4dcc0]">15.000 lei nerambursabili.</span></h1>
-            <p class="mt-9 max-w-2xl text-lg leading-8 text-white/72">Programul poate acoperi până la 75% din costul eligibil pentru achiziția și montarea unei baterii de stocare la locuința unui prosumator casnic.</p>
+          <div class="max-w-[49rem]">
+            <span class="eyebrow eyebrow-light">Program AFM · fonduri nerambursabile</span>
+            <h1 class="font-display mt-9 text-[clamp(3.15rem,6vw,5.9rem)] leading-[0.91] font-semibold tracking-[-0.06em]">Banii de la stat<br /><span class="text-[#d4dcc0]">se văd în energia ta.</span></h1>
+            <p class="mt-9 max-w-2xl text-lg leading-8 text-white/72">Prin programul AFM poți obține până la 15.000 lei nerambursabili pentru achiziția și montarea unei baterii de stocare. Finanțarea poate acoperi maximum 75% din costul eligibil.</p>
             <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-              <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-sm bg-[#d0d8b8] px-7 text-base font-bold text-[#10231c] transition hover:bg-white">Verifică dacă ești eligibil <span aria-hidden="true" class="ml-3">→</span></a>
+              <a href="#eligibilitate" class="inline-flex min-h-14 items-center justify-center rounded-sm bg-[#d0d8b8] px-7 text-base font-bold text-[#10231c] transition hover:bg-white">Verifică dacă te încadrezi <span aria-hidden="true" class="ml-3">→</span></a>
               <a href="#documente" class="inline-flex min-h-14 items-center justify-center rounded-sm border border-white/30 bg-black/10 px-7 text-base font-semibold text-white backdrop-blur-sm transition hover:border-white/70 hover:bg-white/10">Detalii program</a>
             </div>
           </div>
-          <dl class="mt-20 grid max-w-3xl grid-cols-3 gap-5 border-t border-white/18 pt-7">
-            {metrics.map(([value, label]) => <div><dt class="font-display text-[clamp(1.6rem,3vw,2.25rem)] font-semibold tracking-[-0.04em] text-white">{value}</dt><dd class="mt-1 text-xs leading-5 text-white/60 sm:text-sm">{label}</dd></div>)}
-          </dl>
+          <ol class="funding-flow mt-16" aria-label="Traseul de la finanțare la economie">
+            {fundingFlow.map(([number, title, description]) => (
+              <li class="funding-flow-step">
+                <span class="funding-flow-number">{number}</span>
+                <strong>{title}</strong>
+                <span>{description}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

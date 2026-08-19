@@ -234,6 +234,71 @@ h2 {
   background: #d0d9b3;
 }
 
+.funding-flow {
+  display: grid;
+  width: min(100%, 72rem);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 0.2rem;
+  background: rgb(3 15 12 / 0.58);
+  box-shadow: 0 28px 80px rgb(0 0 0 / 0.24);
+  backdrop-filter: blur(18px);
+}
+
+.funding-flow-step {
+  position: relative;
+  display: flex;
+  min-height: 8.25rem;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.35rem 1.45rem;
+}
+
+.funding-flow-step + .funding-flow-step {
+  border-left: 1px solid rgb(255 255 255 / 0.13);
+}
+
+.funding-flow-step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: -0.75rem;
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 50%;
+  color: #d0d9b3;
+  background: #102a21;
+  font-size: 0.72rem;
+  transform: translateY(-50%);
+}
+
+.funding-flow-number {
+  margin-bottom: 0.65rem;
+  color: #cbd5b1;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.funding-flow-step strong {
+  color: #fff;
+  font-size: clamp(0.96rem, 1.35vw, 1.12rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.funding-flow-step > span:last-child {
+  margin-top: 0.3rem;
+  color: rgb(255 255 255 / 0.56);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
 .section-pad {
   padding-block: clamp(6rem, 11vw, 10rem);
 }
@@ -313,13 +378,38 @@ details[open] .faq-plus {
 @media (max-width: 767px) {
   .hero-premium,
   .hero-premium > .page-shell {
-    min-height: 760px;
+    min-height: 940px;
   }
 
   .hero-overlay {
     background:
       linear-gradient(90deg, rgb(4 14 11 / 0.94), rgb(5 16 13 / 0.46)),
       linear-gradient(0deg, rgb(4 13 10 / 0.9), transparent 62%);
+  }
+
+  .funding-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .funding-flow-step {
+    min-height: 7.4rem;
+    padding: 1.1rem;
+  }
+
+  .funding-flow-step + .funding-flow-step {
+    border-left: 0;
+  }
+
+  .funding-flow-step:nth-child(even) {
+    border-left: 1px solid rgb(255 255 255 / 0.13);
+  }
+
+  .funding-flow-step:nth-child(n + 3) {
+    border-top: 1px solid rgb(255 255 255 / 0.13);
+  }
+
+  .funding-flow-step::after {
+    display: none !important;
   }
 }
 
