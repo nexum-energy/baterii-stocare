@@ -220,10 +220,70 @@ h2 {
   box-shadow: none;
 }
 
+.hero-premium {
+  background: #061711;
+}
+
+.hero-product-scene {
+  background:
+    radial-gradient(circle at 78% 41%, rgb(183 207 181 / 0.2), transparent 19rem),
+    radial-gradient(circle at 84% 82%, rgb(98 125 110 / 0.18), transparent 27rem),
+    linear-gradient(118deg, #03110d 0%, #0a241b 53%, #14241e 100%);
+}
+
+.hero-product-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.11;
+  background-image:
+    linear-gradient(rgb(211 223 201 / 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(211 223 201 / 0.18) 1px, transparent 1px);
+  background-size: 5.5rem 5.5rem;
+  mask-image: linear-gradient(90deg, transparent 38%, #000 72%, transparent 100%);
+}
+
+.hero-product-scene::after {
+  content: "";
+  position: absolute;
+  right: -8rem;
+  bottom: 2.5rem;
+  width: min(62vw, 60rem);
+  height: 9rem;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.48);
+  filter: blur(34px);
+  transform: perspective(34rem) rotateX(67deg);
+}
+
+.hero-product-aura {
+  position: absolute;
+  z-index: 1;
+  top: 8%;
+  right: 2%;
+  width: min(52vw, 58rem);
+  height: 84%;
+  border: 1px solid rgb(213 224 198 / 0.12);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(213 224 198 / 0.12), transparent 65%);
+  filter: blur(1px);
+}
+
+.hero-product-image {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: clamp(-13rem, -10vw, -7rem);
+  width: clamp(46rem, 62vw, 70rem);
+  max-width: none;
+  filter: drop-shadow(0 38px 48px rgb(0 0 0 / 0.48)) drop-shadow(0 0 38px rgb(210 221 194 / 0.08));
+  transform: translateY(-50%);
+}
+
 .hero-overlay {
   background:
-    linear-gradient(90deg, rgb(3 13 11 / 0.9) 0%, rgb(4 16 14 / 0.74) 34%, rgb(5 15 12 / 0.18) 61%, rgb(5 15 12 / 0.04) 100%),
-    linear-gradient(0deg, rgb(3 12 10 / 0.72), transparent 50%);
+    linear-gradient(90deg, rgb(3 13 11 / 0.98) 0%, rgb(4 16 14 / 0.9) 36%, rgb(5 15 12 / 0.38) 63%, rgb(5 15 12 / 0.06) 100%),
+    linear-gradient(0deg, rgb(3 12 10 / 0.78), transparent 53%);
 }
 
 .eyebrow-light {
@@ -383,8 +443,23 @@ details[open] .faq-plus {
 
   .hero-overlay {
     background:
-      linear-gradient(90deg, rgb(4 14 11 / 0.94), rgb(5 16 13 / 0.46)),
-      linear-gradient(0deg, rgb(4 13 10 / 0.9), transparent 62%);
+      linear-gradient(90deg, rgb(4 14 11 / 0.96), rgb(5 16 13 / 0.62)),
+      linear-gradient(0deg, rgb(4 13 10 / 0.93), transparent 48%);
+  }
+
+  .hero-product-image {
+    top: 54%;
+    right: -11rem;
+    width: 46rem;
+    opacity: 0.5;
+  }
+
+  .hero-product-aura {
+    top: 18%;
+    right: -42%;
+    width: 112%;
+    height: 62%;
+    opacity: 0.68;
   }
 
   .funding-flow {
