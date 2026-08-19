@@ -63,6 +63,8 @@ const faqs = [
   </head>
   <body>
     <div id="site-intro" class="site-intro" aria-hidden="true">
+      <div class="intro-panel intro-panel-left"></div>
+      <div class="intro-panel intro-panel-right"></div>
       <div class="intro-inner">
         <div class="intro-logo-frame">
           <img src={assetPath('nexum-energy-logo.png')} width="208" height="208" alt="" class="h-full w-full object-contain p-4" />
@@ -225,7 +227,7 @@ const faqs = [
           const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           window.setTimeout(() => {
             intro.classList.add('is-leaving');
-            window.setTimeout(() => intro.remove(), reducedMotion ? 50 : 520);
+            window.setTimeout(() => intro.remove(), reducedMotion ? 50 : 1050);
           }, reducedMotion ? 80 : 1500);
         }
 
