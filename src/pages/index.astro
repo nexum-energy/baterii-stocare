@@ -62,6 +62,16 @@ const faqs = [
     <title>Fonduri nerambursabile pentru baterii de stocare | Nexum Energy</title>
   </head>
   <body>
+    <div id="site-intro" class="site-intro" aria-hidden="true">
+      <div class="intro-inner">
+        <div class="intro-logo-frame">
+          <img src={assetPath('nexum-energy-logo.png')} width="208" height="208" alt="" class="h-full w-full object-contain p-4" />
+        </div>
+        <p class="mt-7 text-xs font-bold tracking-[0.28em] text-white/72 uppercase">Nexum Energy</p>
+        <div class="intro-line mx-auto mt-4"></div>
+      </div>
+    </div>
+    <noscript><style>.site-intro{display:none!important}</style></noscript>
     <a href="#continut" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-3">Sari la conținut</a>
 
     <header class="site-header page-shell absolute inset-x-0 top-0 z-30 flex h-28 items-center justify-between border-b border-white/15" aria-label="Navigație principală">
@@ -145,6 +155,13 @@ const faqs = [
                     </div>
                   ))}
                 </div>
+                <div class="mt-10 border-t border-[#e2e8e3] pt-8">
+                  <p class="text-xs font-bold tracking-[0.14em] text-moss uppercase">Datele sistemului existent</p>
+                  <div class="mt-5 grid gap-6 sm:grid-cols-2">
+                    <label class="block"><span class="text-sm font-bold text-ink">Puterea sistemului fotovoltaic</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="0" step="0.1" name="pvPower" inputmode="decimal" placeholder="ex. 6" /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
+                    <label class="block"><span class="text-sm font-bold text-ink">Ce invertor ai?</span><input class="field-input mt-2" type="text" name="inverter" placeholder="Marcă/model sau «Nu știu»" /></label>
+                  </div>
+                </div>
               </fieldset>
 
               <fieldset class="eligibility-step" data-step="1" hidden>
@@ -154,8 +171,6 @@ const faqs = [
                   <label class="block"><span class="text-sm font-extrabold text-ink">Telefon <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="07xx xxx xxx" required /></label>
                   <label class="block"><span class="text-sm font-extrabold text-ink">E-mail</span><input class="field-input mt-2" type="email" name="email" autocomplete="email" placeholder="nume@exemplu.ro" /></label>
                   <label class="block sm:col-span-2"><span class="text-sm font-extrabold text-ink">Județ și localitate <span aria-hidden="true" class="text-moss">*</span></span><input class="field-input mt-2" type="text" name="location" autocomplete="address-level2" placeholder="ex. Giurgiu, Bolintin-Vale" required /></label>
-                  <label class="block"><span class="text-sm font-extrabold text-ink">Puterea sistemului fotovoltaic</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="0" step="0.1" name="pvPower" inputmode="decimal" placeholder="ex. 6" /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
-                  <label class="block"><span class="text-sm font-extrabold text-ink">Ce invertor ai?</span><input class="field-input mt-2" type="text" name="inverter" placeholder="Marcă/model sau «Nu știu»" /></label>
                 </div>
                 <label class="mt-7 flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#5f7067]"><input class="mt-1 h-5 w-5 shrink-0 accent-[#2f795e]" type="checkbox" name="consent" required /><span>Sunt de acord ca Nexum Energy să folosească datele introduse pentru verificarea eligibilității și pentru a-mi transmite oferta. <span aria-hidden="true" class="text-moss">*</span></span></label>
                 <div id="form-status" class="mt-5 hidden rounded-sm border px-4 py-3 text-sm font-semibold" role="status" aria-live="polite"></div>
@@ -205,6 +220,15 @@ const faqs = [
 
     <script is:inline>
       (() => {
+        const intro = document.getElementById('site-intro');
+        if (intro) {
+          const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          window.setTimeout(() => {
+            intro.classList.add('is-leaving');
+            window.setTimeout(() => intro.remove(), reducedMotion ? 50 : 520);
+          }, reducedMotion ? 80 : 1500);
+        }
+
         const eligibilityForm = document.getElementById('eligibility-form');
         const steps = Array.from(document.querySelectorAll('.eligibility-step'));
         const nextButton = document.getElementById('next-step');
