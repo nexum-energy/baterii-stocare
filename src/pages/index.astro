@@ -188,22 +188,49 @@ const faqs = [
             <form id="eligibility-form" data-endpoint={contactEndpoint} data-email={contactEmail} novalidate class="px-5 py-8 sm:px-9 sm:py-10">
               <div id="step-alert" class="mb-6 hidden rounded-sm border border-[#e4b8a9] bg-[#fff4ef] px-4 py-3 text-sm font-semibold text-[#7a3528]" role="alert">Alege un răspuns pentru fiecare întrebare înainte de a continua.</div>
               <fieldset class="eligibility-step" data-step="0">
-                <legend class="text-3xl font-extrabold tracking-[-0.04em] text-ink">Verifică accesul la fondurile nerambursabile</legend><p class="mt-3 max-w-2xl leading-7 text-[#65756d]">Răspunde la cinci întrebări esențiale din ghid. Dacă nu știi un răspuns, poți selecta „Nu sunt sigur”.</p>
-                <div class="mt-9 space-y-7">
-                  {eligibilityQuestions.map((question) => (
-                    <div class="question-group">
-                      <p class="text-base font-extrabold text-ink" id={`${question.name}-label`}>{question.title}</p>
-                      <div class="mt-3 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-labelledby={`${question.name}-label`}>
-                        {question.options.map(([value, label], optionIndex) => <label class="option-card"><input type="radio" name={question.name} value={value} required={optionIndex === 0} /><span class="text-sm font-bold leading-5">{label}</span></label>)}
-                      </div>
+                <legend class="text-3xl font-extrabold tracking-[-0.04em] text-ink">Verifică accesul la fondurile nerambursabile</legend><p class="mt-3 max-w-2xl leading-7 text-[#65756d]">Începem cu istoricul finanțărilor Casa Verde, apoi continuăm cu întrebările esențiale din ghid.</p>
+
+                <div class="mt-9 rounded-lg border border-[#cbd8ce] bg-[#f4f6f2] p-5 sm:p-7">
+                  <p class="text-xs font-bold tracking-[0.15em] text-moss uppercase">Filtru inițial</p>
+                  <div class="question-group mt-5">
+                    <p class="text-base font-extrabold text-ink" id="previous-casa-verde-label">Ați mai fost beneficiar al programului Casa Verde în sesiunile 2019, 2021 sau 2023?</p>
+                    <div class="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-labelledby="previous-casa-verde-label">
+                      <label class="option-card"><input type="radio" name="previousCasaVerde" value="yes" required /><span class="text-sm font-bold leading-5">Da</span></label>
+                      <label class="option-card"><input type="radio" name="previousCasaVerde" value="no" /><span class="text-sm font-bold leading-5">Nu</span></label>
                     </div>
-                  ))}
+                  </div>
+
+                  <div id="previous-storage-followup" class="mt-7 border-t border-[#d7e1d9] pt-7" hidden>
+                    <p class="text-base font-extrabold text-ink" id="previous-storage-label">Ați beneficiat atunci de finanțare pentru un sistem de stocare (baterii)?</p>
+                    <div class="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-labelledby="previous-storage-label">
+                      <label class="option-card"><input type="radio" name="previousStorageFunding" value="yes" required disabled /><span class="text-sm font-bold leading-5">Da</span></label>
+                      <label class="option-card"><input type="radio" name="previousStorageFunding" value="no" disabled /><span class="text-sm font-bold leading-5">Nu</span></label>
+                    </div>
+                  </div>
+
+                  <div id="beneficiary-ineligible" class="mt-7 rounded-sm border border-[#dcaa9b] bg-[#fff2ed] p-5 text-[#78382b]" role="alert" hidden>
+                    <p class="text-xs font-bold tracking-[0.14em] uppercase">Rezultat preliminar · neeligibil</p>
+                    <p class="mt-2 text-sm font-semibold leading-6">Dacă ați beneficiat deja de finanțare pentru baterii prin Casa Verde, formularul nu poate continua. Eligibilitatea finală este stabilită de AFM după verificarea documentelor.</p>
+                  </div>
                 </div>
-                <div class="mt-10 border-t border-[#e2e8e3] pt-8">
-                  <p class="text-xs font-bold tracking-[0.14em] text-moss uppercase">Datele sistemului existent</p>
-                  <div class="mt-5 grid gap-6 sm:grid-cols-2">
-                    <label class="block"><span class="text-sm font-bold text-ink">Puterea sistemului fotovoltaic</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="0" step="0.1" name="pvPower" inputmode="decimal" placeholder="ex. 6" /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
-                    <label class="block"><span class="text-sm font-bold text-ink">Ce invertor ai?</span><input class="field-input mt-2" type="text" name="inverter" placeholder="Marcă/model sau «Nu știu»" /></label>
+
+                <div id="eligibility-core-questions" hidden>
+                  <div class="mt-9 space-y-7">
+                    {eligibilityQuestions.map((question) => (
+                      <div class="question-group">
+                        <p class="text-base font-extrabold text-ink" id={`${question.name}-label`}>{question.title}</p>
+                        <div class="mt-3 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-labelledby={`${question.name}-label`}>
+                          {question.options.map(([value, label], optionIndex) => <label class="option-card"><input type="radio" name={question.name} value={value} required={optionIndex === 0} disabled /><span class="text-sm font-bold leading-5">{label}</span></label>)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div class="mt-10 border-t border-[#e2e8e3] pt-8">
+                    <p class="text-xs font-bold tracking-[0.14em] text-moss uppercase">Datele sistemului existent</p>
+                    <div class="mt-5 grid gap-6 sm:grid-cols-2">
+                      <label class="block"><span class="text-sm font-bold text-ink">Puterea sistemului fotovoltaic</span><span class="relative mt-2 block"><input class="field-input pr-16" type="number" min="0" step="0.1" name="pvPower" inputmode="decimal" placeholder="ex. 6" disabled /><span class="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm font-bold text-[#74847b]">kW</span></span></label>
+                      <label class="block"><span class="text-sm font-bold text-ink">Ce invertor ai?</span><input class="field-input mt-2" type="text" name="inverter" placeholder="Marcă/model sau «Nu știu»" disabled /></label>
+                    </div>
                   </div>
                 </div>
               </fieldset>
@@ -221,7 +248,7 @@ const faqs = [
               </fieldset>
               <div class="mt-10 flex flex-col-reverse gap-3 border-t border-[#e5ebe6] pt-7 sm:flex-row sm:justify-between">
                 <button id="previous-step" type="button" class="hidden min-h-13 rounded-md border border-[#ccd8cf] px-6 font-bold text-forest transition hover:border-moss">Înapoi</button>
-                <button id="next-step" type="button" class="min-h-13 rounded-md bg-forest px-7 font-bold text-white transition hover:bg-moss sm:ml-auto">Continuă <span aria-hidden="true">→</span></button>
+                <button id="next-step" type="button" class="min-h-13 rounded-md bg-forest px-7 font-bold text-white transition hover:bg-moss disabled:cursor-not-allowed disabled:opacity-45 sm:ml-auto">Continuă <span aria-hidden="true">→</span></button>
                 <button id="submit-eligibility" type="submit" class="hidden min-h-13 rounded-md bg-lime px-7 font-bold text-forest transition hover:bg-[#d5dcc0] disabled:cursor-wait disabled:opacity-70 sm:ml-auto">Trimite pentru verificare <span aria-hidden="true">→</span></button>
               </div>
               <p class="mt-4 text-xs leading-5 text-[#7b8982]">Câmpurile marcate cu * sunt obligatorii. Eligibilitatea finală este stabilită de AFM după verificarea documentelor.</p>
@@ -361,8 +388,45 @@ const faqs = [
         const progressBar = document.getElementById('progress-bar');
         const progressItems = Array.from(document.querySelectorAll('.progress-item'));
         const formStatus = document.getElementById('form-status');
+        const previousCasaVerdeInputs = Array.from(document.querySelectorAll('input[name="previousCasaVerde"]'));
+        const previousStorageInputs = Array.from(document.querySelectorAll('input[name="previousStorageFunding"]'));
+        const previousStorageFollowup = document.getElementById('previous-storage-followup');
+        const eligibilityCoreQuestions = document.getElementById('eligibility-core-questions');
+        const beneficiaryIneligible = document.getElementById('beneficiary-ineligible');
         let currentStep = 0;
         const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const selectedValue = (inputs) => inputs.find((input) => input.checked)?.value || '';
+        const setSectionControlsDisabled = (section, disabled) => {
+          section?.querySelectorAll('input, select, textarea').forEach((control) => { control.disabled = disabled; });
+        };
+        const syncBeneficiaryFlow = () => {
+          const previousBeneficiary = selectedValue(previousCasaVerdeInputs);
+          const showStorageFollowup = previousBeneficiary === 'yes';
+          previousStorageFollowup.hidden = !showStorageFollowup;
+          setSectionControlsDisabled(previousStorageFollowup, !showStorageFollowup);
+          if (!showStorageFollowup) previousStorageInputs.forEach((input) => { input.checked = false; });
+
+          const previousStorageFunding = showStorageFollowup ? selectedValue(previousStorageInputs) : '';
+          const isIneligible = previousStorageFunding === 'yes';
+          const canContinueQuestions = previousBeneficiary === 'no' || previousStorageFunding === 'no';
+          beneficiaryIneligible.hidden = !isIneligible;
+          eligibilityCoreQuestions.hidden = !canContinueQuestions;
+          setSectionControlsDisabled(eligibilityCoreQuestions, !canContinueQuestions);
+          nextButton.disabled = isIneligible;
+          if (previousBeneficiary || previousStorageFunding) stepAlert.classList.add('hidden');
+        };
+
+        previousCasaVerdeInputs.forEach((input) => input.addEventListener('change', syncBeneficiaryFlow));
+        previousStorageInputs.forEach((input) => input.addEventListener('change', () => {
+          syncBeneficiaryFlow();
+          if (selectedValue(previousStorageInputs) === 'yes') {
+            beneficiaryIneligible.setAttribute('tabindex', '-1');
+            beneficiaryIneligible.focus({ preventScroll: true });
+          }
+        }));
+        eligibilityForm?.addEventListener('reset', () => window.setTimeout(syncBeneficiaryFlow));
+        syncBeneficiaryFlow();
 
         const setStep = (index, focusHeading = true) => {
           currentStep = clamp(index, 0, steps.length - 1);
@@ -389,6 +453,12 @@ const faqs = [
         };
 
         const validateCurrentStep = () => {
+          if (currentStep === 0 && !beneficiaryIneligible.hidden) {
+            stepAlert.textContent = 'Pe baza răspunsului despre finanțarea anterioară pentru baterii, formularul nu poate continua.';
+            stepAlert.classList.remove('hidden');
+            beneficiaryIneligible.focus({ preventScroll: true });
+            return false;
+          }
           const controls = Array.from(steps[currentStep].querySelectorAll('input, select, textarea'));
           for (const control of controls) {
             if (!control.checkValidity()) {
@@ -434,6 +504,8 @@ const faqs = [
             `Localitate: ${formData.get('location')}`,
             `Putere fotovoltaică: ${formData.get('pvPower') || 'nespecificată'} kW`,
             `Invertor: ${formData.get('inverter') || 'nespecificat'}`, '',
+            `Beneficiar anterior Casa Verde (2019/2021/2023): ${answer('previousCasaVerde')}`,
+            `Finanțare anterioară pentru baterii: ${formData.get('previousCasaVerde') === 'no' ? 'Nu se aplică' : answer('previousStorageFunding')}`,
             `Persoană fizică/prosumator/contract pe nume: ${answer('prosumator')}`,
             `Fără restanțe fiscale: ${answer('debts')}`,
             `Locuință în România și sistem racordat: ${answer('grid')}`,
