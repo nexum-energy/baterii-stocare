@@ -6,6 +6,11 @@ const assetPath = (filename: string) => `${basePath}${filename}`;
 const ogImageUrl = new URL(assetPath('og-battery-luxury.png'), 'https://nexum-energy.github.io').toString();
 const contactEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT ?? '';
 const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
+const batteryViews = [
+  assetPath('battery-esa3-right.png'),
+  assetPath('battery-esa3-front.png'),
+  assetPath('battery-esa3-10k.png'),
+];
 
 const fundingFlow = [
   ['01', 'AFM', 'Programul de finanțare'],
@@ -92,13 +97,18 @@ const faqs = [
     </header>
 
     <main id="continut">
-      <section id="program" class="hero-premium relative isolate min-h-[900px] overflow-hidden text-white">
+      <section id="program" class="hero-premium relative isolate min-h-[900px] overflow-hidden text-white" data-battery-frames={JSON.stringify(batteryViews)}>
         <div class="hero-product-scene absolute inset-0 -z-20 overflow-hidden">
           <div class="hero-product-aura" aria-hidden="true"></div>
-          <img src={assetPath('battery-esa3-10k.png')} alt="Baterie modulară albă pentru stocarea energiei fotovoltaice" class="hero-product-image" fetchpriority="high" />
+          <img id="battery-viewer-image" src={batteryViews[2]} alt="Baterie modulară albă pentru stocarea energiei fotovoltaice, vedere din stânga" class="hero-product-image" draggable="false" fetchpriority="high" />
         </div>
         <div class="hero-overlay absolute inset-0 -z-10"></div>
-        <div class="page-shell flex min-h-[900px] flex-col justify-center pt-36 pb-16">
+        <button id="battery-viewer-control" type="button" class="battery-drag-hint" aria-label="Schimbă unghiul bateriei" title="Apasă sau trage cu mouse-ul pentru a roti bateria">
+          <span class="battery-rotation-mark">360°</span>
+          <span><strong>Trage pentru a roti</strong><small>Mișcă produsul stânga–dreapta</small></span>
+          <span class="battery-drag-arrows" aria-hidden="true">↔</span>
+        </button>
+        <div class="page-shell relative z-10 flex min-h-[900px] flex-col justify-center pt-36 pb-16">
           <div class="max-w-[49rem]">
             <span class="eyebrow eyebrow-light">Program AFM · fonduri nerambursabile</span>
             <h1 class="font-display mt-9 text-[clamp(3.15rem,6vw,5.9rem)] leading-[0.91] font-semibold tracking-[-0.06em] uppercase">Casa Verde —<br /><span class="text-[#d4dcc0]">Baterii 2026.</span></h1>
@@ -239,6 +249,74 @@ const faqs = [
             intro.classList.add('is-leaving');
             window.setTimeout(() => intro.remove(), reducedMotion ? 50 : 1050);
           }, reducedMotion ? 80 : 1500);
+        }
+
+        const batteryStage = document.getElementById('program');
+        const batteryImage = document.getElementById('battery-viewer-image');
+        const batteryControl = document.getElementById('battery-viewer-control');
+        if (batteryStage && batteryImage) {
+          const frames = JSON.parse(batteryStage.dataset.batteryFrames || '[]');
+          const frameLabels = ['vedere din dreapta', 'vedere frontală', 'vedere din stânga'];
+          frames.forEach((src) => { const preload = new Image(); preload.src = src; });
+          let frameIndex = 2;
+          let dragStartX = 0;
+          let dragStartFrame = frameIndex;
+          let isDragging = false;
+          let hasInteracted = false;
+
+          const setBatteryFrame = (nextIndex) => {
+            const boundedIndex = Math.min(frames.length - 1, Math.max(0, nextIndex));
+            if (boundedIndex === frameIndex || !frames[boundedIndex]) return;
+            frameIndex = boundedIndex;
+            batteryImage.src = frames[frameIndex];
+            batteryImage.alt = `Baterie modulară albă pentru stocarea energiei fotovoltaice, ${frameLabels[frameIndex]}`;
+            const restingOpacity = window.innerWidth < 768 ? 0.5 : 1;
+            batteryImage.animate(
+              [{ opacity: Math.min(restingOpacity, 0.42), transform: 'translateY(-50%) scale(0.985)' }, { opacity: restingOpacity, transform: 'translateY(-50%) scale(1)' }],
+              { duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 180, easing: 'ease-out' },
+            );
+            batteryControl?.setAttribute('aria-label', `Baterie: ${frameLabels[frameIndex]}. Apasă pentru unghiul următor.`);
+          };
+
+          batteryStage.addEventListener('pointerdown', (event) => {
+            if (event.pointerType === 'mouse' && event.button !== 0) return;
+            if (event.target.closest('a, button, input, select, textarea, label')) return;
+            const bounds = batteryStage.getBoundingClientRect();
+            if (event.clientX < bounds.left + bounds.width * 0.48) return;
+            hasInteracted = true;
+            isDragging = true;
+            dragStartX = event.clientX;
+            dragStartFrame = frameIndex;
+            batteryStage.classList.add('is-rotating');
+            batteryStage.setPointerCapture?.(event.pointerId);
+            event.preventDefault();
+          });
+
+          batteryStage.addEventListener('pointermove', (event) => {
+            if (!isDragging) return;
+            const step = window.innerWidth < 768 ? 52 : 82;
+            const movedFrames = Math.round((event.clientX - dragStartX) / step);
+            setBatteryFrame(dragStartFrame - movedFrames);
+          });
+
+          const stopBatteryDrag = (event) => {
+            if (!isDragging) return;
+            isDragging = false;
+            batteryStage.classList.remove('is-rotating');
+            batteryStage.releasePointerCapture?.(event.pointerId);
+          };
+          batteryStage.addEventListener('pointerup', stopBatteryDrag);
+          batteryStage.addEventListener('pointercancel', stopBatteryDrag);
+          batteryControl?.addEventListener('click', () => {
+            hasInteracted = true;
+            setBatteryFrame(frameIndex === 0 ? frames.length - 1 : frameIndex - 1);
+          });
+
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(1); }, 2800);
+            window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(0); }, 3500);
+            window.setTimeout(() => { if (!hasInteracted) setBatteryFrame(2); }, 4300);
+          }
         }
 
         const eligibilityForm = document.getElementById('eligibility-form');
