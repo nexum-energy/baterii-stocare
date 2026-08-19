@@ -8,7 +8,7 @@
   --color-mist: #eef1ec;
   --color-cream: #f5f4ef;
   --font-sans: "Manrope", "Segoe UI", sans-serif;
-  --font-display: "Newsreader", Georgia, serif;
+  --font-display: "Cormorant Garamond", Georgia, serif;
 }
 
 :root {
@@ -168,6 +168,7 @@ h1,
 h2 {
   font-family: var(--font-display);
   font-weight: 500;
+  text-wrap: balance;
 }
 
 .font-display {
@@ -219,8 +220,8 @@ h2 {
 
 .hero-overlay {
   background:
-    linear-gradient(90deg, rgb(4 14 11 / 0.96) 0%, rgb(5 16 13 / 0.86) 34%, rgb(5 15 12 / 0.28) 61%, rgb(5 15 12 / 0.08) 100%),
-    linear-gradient(0deg, rgb(4 13 10 / 0.8), transparent 48%);
+    linear-gradient(90deg, rgb(3 13 11 / 0.9) 0%, rgb(4 16 14 / 0.74) 34%, rgb(5 15 12 / 0.18) 61%, rgb(5 15 12 / 0.04) 100%),
+    linear-gradient(0deg, rgb(3 12 10 / 0.72), transparent 50%);
 }
 
 .eyebrow-light {
@@ -315,7 +316,7 @@ details[open] .faq-plus {
 
   .hero-overlay {
     background:
-      linear-gradient(90deg, rgb(4 14 11 / 0.96), rgb(5 16 13 / 0.5)),
+      linear-gradient(90deg, rgb(4 14 11 / 0.94), rgb(5 16 13 / 0.46)),
       linear-gradient(0deg, rgb(4 13 10 / 0.9), transparent 62%);
   }
 }
