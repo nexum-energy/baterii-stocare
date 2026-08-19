@@ -20,11 +20,15 @@ const fundingFlow = [
 ];
 
 const eligibilityQuestions = [
-  { name: 'prosumator', title: 'Ești persoană fizică, prosumator, iar contractul este pe numele tău?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu sunt sigur']] },
-  { name: 'debts', title: 'Ești fără restanțe la bugetul de stat și la bugetul local?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu încă']] },
-  { name: 'grid', title: 'Locuința este în România, iar sistemul fotovoltaic este racordat la rețea?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu sunt sigur']] },
-  { name: 'existingStorage', title: 'Ai deja o baterie de stocare instalată la această adresă?', options: [['no', 'Nu'], ['yes', 'Da'], ['unknown', 'Nu sunt sigur']] },
-  { name: 'activities', title: 'Se desfășoară activități economice sau profesionale la această adresă?', options: [['none', 'Nu'], ['separate', 'Da, cu contor separat'], ['unseparated', 'Da, fără contor separat']] },
+  { name: 'individualApplicant', title: 'Solicitați finanțarea în calitate de persoană fizică?', options: [['yes', 'Da'], ['no', 'Nu']] },
+  { name: 'debts', title: 'Aveți toate obligațiile către bugetul de stat și bugetul local achitate?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu știu încă']] },
+  { name: 'grid', title: 'Locul de implementare se află în România, iar sistemul fotovoltaic este racordat la rețeaua electrică?', options: [['yes', 'Da'], ['no', 'Nu'], ['unknown', 'Nu sunt sigur']] },
+  { name: 'existingStorage', title: 'Aveți deja o baterie de stocare instalată la această adresă?', options: [['no', 'Nu'], ['yes', 'Da'], ['unknown', 'Nu sunt sigur']] },
+  { name: 'registeredEntityAddress', title: 'Adresa de implementare este declarată sau înregistrată ca sediu social ori fiscal al unei societăți, PFA, cabinet sau altei entități?', options: [['yes', 'Da'], ['separate', 'Da, dar consumul activității este contorizat separat'], ['no', 'Nu']] },
+  { name: 'sameAsIdAddress', title: 'Adresa de implementare este aceeași cu adresa de domiciliu din actul de identitate?', options: [['yes', 'Da'], ['no', 'Nu']] },
+  { name: 'prosumerContract', title: 'Contractul de prosumator este încheiat pe numele dumneavoastră și corespunde adresei la care doriți instalarea bateriei?', options: [['yes', 'Da'], ['no', 'Nu']] },
+  { name: 'recentEnergyInvoice', title: 'Aveți o factură de energie electrică emisă pe numele dumneavoastră, pentru locul de consum aferent contractului de prosumator, cu o vechime de cel mult 3 luni?', options: [['yes', 'Da'], ['no', 'Nu']] },
+  { name: 'exclusiveConsumptionPoint', title: 'Bateria care va fi instalată va deservi exclusiv locul de consum și de producere pentru care aveți calitatea de prosumator?', options: [['yes', 'Da'], ['no', 'Nu']] },
 ];
 
 const documents = [
@@ -220,7 +224,7 @@ const faqs = [
                     {eligibilityQuestions.map((question) => (
                       <div class="question-group">
                         <p class="text-base font-extrabold text-ink" id={`${question.name}-label`}>{question.title}</p>
-                        <div class="mt-3 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-labelledby={`${question.name}-label`}>
+                        <div class:list={['mt-3 grid gap-2', question.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3']} role="radiogroup" aria-labelledby={`${question.name}-label`}>
                           {question.options.map(([value, label], optionIndex) => <label class="option-card"><input type="radio" name={question.name} value={value} required={optionIndex === 0} disabled /><span class="text-sm font-bold leading-5">{label}</span></label>)}
                         </div>
                       </div>
@@ -493,8 +497,8 @@ const faqs = [
             return;
           }
           const answers = {
-            yes: 'Da', no: 'Nu', unknown: 'Nu sunt sigur', none: 'Nu',
-            separate: 'Da, cu contor separat', unseparated: 'Da, fără contor separat',
+            yes: 'Da', no: 'Nu', unknown: 'Nu sunt sigur',
+            separate: 'Da, dar consumul activității este contorizat separat',
           };
           const answer = (name) => answers[String(formData.get(name))] || String(formData.get(name) || 'nespecificat');
           const lines = [
@@ -507,11 +511,15 @@ const faqs = [
             `Invertor: ${formData.get('inverter') || 'nespecificat'}`, '',
             `Beneficiar anterior Casa Verde (2019/2021/2023): ${answer('previousCasaVerde')}`,
             `Finanțare anterioară pentru baterii: ${formData.get('previousCasaVerde') === 'no' ? 'Nu se aplică' : answer('previousStorageFunding')}`,
-            `Persoană fizică/prosumator/contract pe nume: ${answer('prosumator')}`,
+            `Solicitant persoană fizică: ${answer('individualApplicant')}`,
             `Fără restanțe fiscale: ${answer('debts')}`,
             `Locuință în România și sistem racordat: ${answer('grid')}`,
             `Baterie deja instalată: ${answer('existingStorage')}`,
-            `Activitate economică la adresă: ${answer('activities')}`,
+            `Adresă declarată ca sediu social/fiscal: ${answer('registeredEntityAddress')}`,
+            `Adresa de implementare coincide cu domiciliul: ${answer('sameAsIdAddress')}`,
+            `Contractul de prosumator este pe numele solicitantului și la adresa implementării: ${answer('prosumerContract')}`,
+            `Factură de energie pe numele solicitantului, emisă în ultimele 3 luni: ${answer('recentEnergyInvoice')}`,
+            `Bateria deservește exclusiv locul de consum și producere al prosumatorului: ${answer('exclusiveConsumptionPoint')}`,
           ];
           window.location.href = `mailto:${email || ''}?subject=${encodeURIComponent('Verificare eligibilitate – sistem de stocare')}&body=${encodeURIComponent(lines.join('\n'))}`;
           showStatus(email ? 'Am deschis aplicația de e-mail cu solicitarea completată.' : 'Solicitarea este pregătită în aplicația de e-mail. Adaugă adresa Nexum Energy înainte de trimitere.', 'success');
