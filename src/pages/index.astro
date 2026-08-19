@@ -201,7 +201,7 @@ const faqs = [
                   </div>
 
                   <div id="previous-storage-followup" class="mt-7 border-t border-[#d7e1d9] pt-7" hidden>
-                    <p class="text-base font-extrabold text-ink" id="previous-storage-label">Ați beneficiat atunci de finanțare pentru un sistem de stocare (baterii)?</p>
+                    <p class="text-base font-extrabold text-ink" id="previous-storage-label">Ați beneficiat atunci de finanțare pentru un sistem de stocare (baterii) instalat la adresa de implementare declarată?</p>
                     <div class="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-labelledby="previous-storage-label">
                       <label class="option-card"><input type="radio" name="previousStorageFunding" value="yes" required disabled /><span class="text-sm font-bold leading-5">Da</span></label>
                       <label class="option-card"><input type="radio" name="previousStorageFunding" value="no" disabled /><span class="text-sm font-bold leading-5">Nu</span></label>
@@ -209,8 +209,9 @@ const faqs = [
                   </div>
 
                   <div id="beneficiary-ineligible" class="mt-7 rounded-sm border border-[#dcaa9b] bg-[#fff2ed] p-5 text-[#78382b]" role="alert" hidden>
-                    <p class="text-xs font-bold tracking-[0.14em] uppercase">Rezultat preliminar · neeligibil</p>
-                    <p class="mt-2 text-sm font-semibold leading-6">Dacă ați beneficiat deja de finanțare pentru baterii prin Casa Verde, formularul nu poate continua. Eligibilitatea finală este stabilită de AFM după verificarea documentelor.</p>
+                    <p class="text-xs font-bold tracking-[0.14em] uppercase">Conform ghidului · neeligibil în această sesiune</p>
+                    <p class="mt-2 text-sm font-semibold leading-6">Art. 15 alin. (2) lit. a) din Ghidul de finanțare prevede că „nu este eligibil solicitantul care are instalat un sistem de stocare a energiei electrice la locul de implementare declarat”. În baza răspunsului dumneavoastră, nu sunteți eligibil pentru această sesiune.</p>
+                    <p class="mt-3 text-xs leading-5 text-[#965445]">Rezultatul este preliminar. Decizia finală privind eligibilitatea aparține AFM.</p>
                   </div>
                 </div>
 
@@ -454,7 +455,7 @@ const faqs = [
 
         const validateCurrentStep = () => {
           if (currentStep === 0 && !beneficiaryIneligible.hidden) {
-            stepAlert.textContent = 'Pe baza răspunsului despre finanțarea anterioară pentru baterii, formularul nu poate continua.';
+            stepAlert.textContent = 'Conform art. 15 alin. (2) lit. a) din Ghidul de finanțare, formularul nu poate continua dacă aveți deja un sistem de stocare instalat la adresa declarată.';
             stepAlert.classList.remove('hidden');
             beneficiaryIneligible.focus({ preventScroll: true });
             return false;
